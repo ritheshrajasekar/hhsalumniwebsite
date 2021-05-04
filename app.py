@@ -5,7 +5,8 @@ from os import path
 
 app = Flask(__name__)
 DB_NAME = "database.db"
-UPLOAD_FOLDER = './static/images/profile_pics'
+UPLOAD_FOLDER = './static/images'
+var = "hello"
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
 app.config['SECRET_KEY'] = 'secret password key phrase here'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -69,7 +70,7 @@ def add_info():
     profile_pic_path = "none"
   else:
     profile_pic_path = path.join(app.config['UPLOAD_FOLDER'], profile_picture_file.filename)
-    profile_picture_file.save(profile_pic_path)
+    profile_picture_file.save(profile_pic_path) 
   
   college_name_input = ""
   if request.form.get('collegeName') != "":
