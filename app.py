@@ -5,7 +5,7 @@ from os import path
 
 app = Flask(__name__)
 DB_NAME = "database.db"
-UPLOAD_FOLDER = './static/images'
+UPLOAD_FOLDER = './static/images/profile_pics'
 var = "hello"
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
 app.config['SECRET_KEY'] = 'secret password key phrase here'
