@@ -1,17 +1,21 @@
-from flask import Flask, render_template, url_for, request
+from flask import Flask, render_template, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from os import path
+import boto3
 
 
 app = Flask(__name__)
 DB_NAME = "database.db"
 UPLOAD_FOLDER = './static/images/profile_pics'
-var = "hello"
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
 app.config['SECRET_KEY'] = 'secret password key phrase here'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 db = SQLAlchemy(app)
+
+#s3 = boto3.client('s3', aws_access_key_id="AKIA6BDN2SIRY3HW2J4T", aws_secret_access_key="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")
+
+BUCKET = "hhs.alumni"
 
 current_id = 0
 
@@ -69,8 +73,11 @@ def add_info():
   if profile_picture_file.filename == "":
     profile_pic_path = "none"
   else:
-    profile_pic_path = path.join(app.config['UPLOAD_FOLDER'], profile_picture_file.filename)
-    profile_picture_file.save(profile_pic_path) 
+    s3 = boto3.resource('s3')
+    s3.Bucket(BUCKET).put_object(Key='{{profile_picture_file.filename}}', Body=profile_picture_file)
+
+    #profile_pic_path = path.join(app.config['UPLOAD_FOLDER'], profile_picture_file.filename)
+    #profile_picture_file.save(profile_pic_path) 
   
   college_name_input = ""
   if request.form.get('collegeName') != "":
