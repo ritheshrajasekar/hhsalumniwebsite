@@ -74,13 +74,12 @@ def add_info():
   if profile_picture_file.filename == "":
     profile_pic_path = "none"
   else:
-    print("here1")
     s3 = boto3.resource('s3', aws_access_key_id="AKIA6BDN2SIRY3HW2J4T", aws_secret_access_key="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", config=Config(signature_version='s3v4'))
-    print("here2")
-    last_id = Entry.query.order_by(Entry.id.desc()).first()
-    print("rithesh:" + str(last_id))
+    #last_id = Entry.query.order_by(Entry.id.desc()).first().id
+    #add handling when it is intially NoneType with 0 entries
+    #print("rithesh:" + str(last_id))
 
-    #s3.Bucket(BUCKET).put_object(Key=profile_picture_file.filename, Body=profile_picture_file)
+    s3.Bucket(BUCKET).put_object(Key=profile_picture_file.filename, Body=profile_picture_file)
 
     #profile_pic_path = path.join(app.config['UPLOAD_FOLDER'], profile_picture_file.filename)
     #profile_picture_file.save(profile_pic_path) 
@@ -91,13 +90,23 @@ def add_info():
   else:
     college_name_input = 'none'
   
-  new_entry = Entry(first_name=first_name_input, last_name=last_name_input, email=email_input, college_name=college_name_input, job_sector=job_sector_input, blurb=blurb_input, approval_status=approval_status_input, profile_pic="hello")
-  try:
+  
+  #try:
+  entry = Entry.query.filter_by(email=email_input).first()
+  if entry:
+    #flash('Email already exists', category='error')
+    print("email already used error")
+  else:
+    new_entry = Entry(first_name=first_name_input, last_name=last_name_input, email=email_input, college_name=college_name_input, job_sector=job_sector_input, blurb=blurb_input, approval_status=approval_status_input, profile_pic="hello")
+
     db.session.add(new_entry)
+    print("here3")
     db.session.commit()
+    print("here")
     return redirect('/')
-  except:
-    return "there was problem"
+    print("here1")
+  #except:
+    #return "there was problem"
   #print("currentId: " + str(current_id))
   
  return render_template('addinfo.html')
