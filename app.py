@@ -74,7 +74,9 @@ def add_info():
   if profile_picture_file.filename == "":
     profile_pic_path = "none"
   else:
+    print("here1")
     s3 = boto3.resource('s3', aws_access_key_id="AKIA6BDN2SIRY3HW2J4T", aws_secret_access_key="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", config=Config(signature_version='s3v4'))
+    print("here2")
     last_id = Entry.query.order_by(Entry.id.desc()).first()
     print("rithesh:" + str(last_id))
 
