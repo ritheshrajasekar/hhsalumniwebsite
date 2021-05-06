@@ -91,7 +91,7 @@ def add_info():
   else:
     college_name_input = 'none'
   
-  new_entry = Entry(first_name=first_name_input, last_name=last_name_input, email=email_input, college_name=college_name_input, job_sector=job_sector_input, blurb=blurb_input, approval_status=approval_status_input)
+  new_entry = Entry(first_name=first_name_input, last_name=last_name_input, email=email_input, college_name=college_name_input, job_sector=job_sector_input, blurb=blurb_input, approval_status=approval_status_input, profile_pic="hello")
   try:
     db.session.add(new_entry)
     db.session.commit()
