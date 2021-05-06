@@ -84,7 +84,7 @@ def add_info():
     #add handling when it is intially NoneType with 0 entries
     #print("rithesh:" + str(last_id))
     current_id = last_id + 1
-    profile_pic_path = str(current_id) + "/" + str(profile_picture_file.filename) 
+    profile_pic_path = str(current_id) + "/" + profile_picture_file.filename 
     s3.Bucket(BUCKET).put_object(Key=profile_pic_path, Body=profile_picture_file)
 
     #profile_pic_path = path.join(app.config['UPLOAD_FOLDER'], profile_picture_file.filename)
