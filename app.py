@@ -71,15 +71,20 @@ def add_info():
 
   profile_picture_file = request.files['profilePic']
   profile_pic_path = ""
+  last_id = 0
   if profile_picture_file.filename == "":
     profile_pic_path = "none"
   else:
     s3 = boto3.resource('s3', aws_access_key_id="AKIA6BDN2SIRY3HW2J4T", aws_secret_access_key="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", config=Config(signature_version='s3v4'))
-    last_id = Entry.query.order_by(Entry.id.desc()).first().id
+    try:
+      last_id = Entry.query.order_by(Entry.id.desc()).first().id
+    except:
+      last_id = 0
+  
     #add handling when it is intially NoneType with 0 entries
     #print("rithesh:" + str(last_id))
-
-    s3.Bucket(BUCKET).put_object(Key=profile_picture_file.filename, Body=profile_picture_file)
+    current_id = last_id + 1
+    s3.Bucket(BUCKET).put_object(Key=str(current_id) + "/" + profile_picture_file.filename, Body=profile_picture_file)
 
     #profile_pic_path = path.join(app.config['UPLOAD_FOLDER'], profile_picture_file.filename)
     #profile_picture_file.save(profile_pic_path) 
