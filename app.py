@@ -75,7 +75,7 @@ def add_info():
     profile_pic_path = "none"
   else:
     s3 = boto3.resource('s3', aws_access_key_id="AKIA6BDN2SIRY3HW2J4T", aws_secret_access_key="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", config=Config(signature_version='s3v4'))
-    #last_id = Entry.query.order_by(Entry.id.desc()).first().id
+    last_id = Entry.query.order_by(Entry.id.desc()).first().id
     #add handling when it is intially NoneType with 0 entries
     #print("rithesh:" + str(last_id))
 
