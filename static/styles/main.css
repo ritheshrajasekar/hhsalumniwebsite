@@ -4,6 +4,8 @@
   perspective: 1000px;
   border: peru;
   box-shadow: palevioletred;
+  border-width: 3px;
+  border-radius: 20%;
 }
 
 .content {
@@ -22,6 +24,7 @@
 
 .face-front,
 .face-back {
+  border-radius: 5%;
   position: absolute;
   width: 100%;
   height: auto;
