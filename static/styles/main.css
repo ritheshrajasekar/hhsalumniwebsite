@@ -63,3 +63,27 @@
 .email {
   text-align: left;
 } */
+
+#profile_pic {
+  text-align: right;
+}
+
+body {
+  background: rgb(216, 237, 240);
+  background: linear-gradient(
+    90deg,
+    rgba(216, 237, 240, 1) 0%,
+    rgba(128, 195, 252, 1) 100%
+  );
+}
+
+.navbar-custom {
+  background-color: #f2f2f2;
+  color: #0800ff;
+}
+
+.btn-custom {
+  color: white;
+  background-color: dimgray;
+  outline-color: darkviolet;
+}
