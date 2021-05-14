@@ -1,4 +1,4 @@
-.card-wrapper {
+/* .card-wrapper {
   width: 100%;
   height: 500px;
   perspective: 1000px;
@@ -24,12 +24,13 @@
 
 .face-front,
 .face-back {
-  border-radius: 5%;
+  border-width: 3px;
+  border-radius: 20%;
   position: absolute;
   width: 100%;
   height: auto;
   /* background-color: lightcyan; */
-  background: hsla(181, 97%, 85%, 1);
+/* background: hsla(181, 97%, 85%, 1);
 
   background: linear-gradient(
     90deg,
@@ -61,4 +62,4 @@
 .college_name,
 .email {
   text-align: left;
-}
+} */
