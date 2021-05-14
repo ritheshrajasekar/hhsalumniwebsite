@@ -34,18 +34,63 @@ body%}
        <label class="form-check-label" for="name"> Name </label>
      </div>
    </div> -->
-    <div class="col-6">
-      <div class="input-group">
-        <input
-          type="search"
-          class="form-control rounded"
-          placeholder="Search"
-          aria-label="Search"
-          aria-describedby="search-addon"
-        />
-        <button type="button" class="btn btn-outline-primary">search</button>
+    <form method="POST" enctype="multipart/form-data">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-6">
+            <div class="input-group">
+              <input
+                type="search"
+                name="search"
+                class="form-control rounded"
+                placeholder="Search"
+                aria-label="Search"
+                aria-describedby="search-addon"
+              />
+              <button type="submit" class="btn btn-outline-primary">
+                search
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    
+    {% if entries|length > 0 %}
+      <div class="container-fluid mt-5">
+        {% for entry in entries %}
+            <div class="card mt-3 mb-3">
+              <div class="row g-5 justify-content-center">
+                <div class="col-sm-5 col-md-2 col-lg-2">
+                    <img src="https://s3.us-east-2.amazonaws.com/hhs.alumni/{{entry.profile_pic}}" class="card-img rounded-circle m-3" alt="">
+                </div>
+                <div class="col-sm-12 col-md-10 col-lg-10">
+                  <div class="card-body">
+                    <h3 class="card-title text-center">{{entry.first_name}} {{entry.last_name}}</h3>
+                    <h6 class="card-text">Job Sector(s): {{entry.job_sector}}</h6>
+                    <h6 class="card-text">Undergraduate College: {{entry.college_name}}</h6>
+                    <h6 class="card-text">Email: {{entry.email}}</h6>
+                    <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur illo optio impedit possimus voluptatem nostrum dolore, pariatur quo nesciunt, dolores accusantium qui enim cupiditate ipsa sunt quos culpa repellendus reiciendis quaerat eos! Beatae, sunt, eveniet impedit esse maiores dignissimos autem iusto fugiat dolorum accusamus dolore. Laborum reprehenderit ipsam error provident.</p>
+                    <p class="card-text">
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi eius consequatur excepturi, eveniet reprehenderit molestiae itaque? Velit rem ducimus excepturi aliquam sunt itaque molestiae, possimus corrupti. Accusantium, nemo. Accusantium, amet?
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+        {% endfor %}
+      </div>
+
+    </div>
+    {% else %}
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-4 col-md-5">
+          <p>No entries found with the given search terms</p>
+        </div>
       </div>
     </div>
+    {% endif %}
   </div>
 </div>
 {% endblock%}

@@ -4,9 +4,8 @@ from os import path
 import boto3
 from botocore.client import Config
 
-
 app = Flask(__name__)
-DB_NAME = "database.db"
+DB_NAME = "database_2.db"
 UPLOAD_FOLDER = './static/images/profile_pics'
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
 app.config['SECRET_KEY'] = 'secret password key phrase here'
@@ -18,7 +17,6 @@ db = SQLAlchemy(app)
 
 BUCKET = "hhs.alumni"
 
-current_id = 0
 
 class Entry(db.Model):
  id = db.Column(db.Integer, primary_key=True)
@@ -38,13 +36,35 @@ def create_database(app):
 
 create_database(app)
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
- return render_template('index.html')
+ s3 = boto3.resource('s3')
+ if request.method == 'POST':
+   search_input = "%{}%".format(request.form.get('search'))
+   search_entries = []
+   search_entries += Entry.query.filter(Entry.first_name.like(search_input))
+   search_entries += Entry.query.filter(Entry.last_name.like(search_input))
+   print("search entries")
+   print(search_entries)
+   #print(search_input)
+
+   #qry = db.Query(Entry).filter(str(Entry.first_name).lower().contains(search_input.lower()))
+  #  qry = db.Query(Entry).filter(search_input.lower() in str(Entry.first_name).lower())
+  #  print("rithesh hello" + str(qry))
+
+  #  for entry in qry.all():
+  #    search_entries.append(entry)
+   #qry = db.Query(Entry).filter(str(Entry.last_name).lower().contains(search_input.lower()))
+  #  qry = db.Query(Entry).filter(search_input.lower() in str(Entry.last_name).lower())
+  #  for entry in qry.all():
+  #    search_entries.append(entry)
+  #  print(search_entries)
+   return render_template('index.html', entries=search_entries, s3=s3, bucket=BUCKET)
+  
+ return render_template('index.html', entries=[], s3=s3, bucket=BUCKET)
 
 @app.route('/addinfo', methods=['GET', 'POST'])
 def add_info():
- global current_id
  if request.method == 'POST':
   first_name_input = request.form.get('firstName')
   last_name_input = request.form.get('lastName')
@@ -100,10 +120,10 @@ def add_info():
   #try:
   entry = Entry.query.filter_by(email=email_input).first()
   if entry:
-    #flash('Email already exists', category='error')
+    flash('Email already exists', category='error')
     print("email already used error")
   else:
-    new_entry = Entry(first_name=first_name_input, last_name=last_name_input, email=email_input, college_name=college_name_input, job_sector=job_sector_input, blurb=blurb_input, approval_status=approval_status_input, profile_pic="hello")
+    new_entry = Entry(first_name=first_name_input, last_name=last_name_input, email=email_input, college_name=college_name_input, job_sector=job_sector_input, blurb=blurb_input, approval_status=approval_status_input, profile_pic=profile_pic_path)
 
     db.session.add(new_entry)
     print("here3")
@@ -111,9 +131,7 @@ def add_info():
     print("here")
     return redirect('/')
     print("here1")
-  #except:
-    #return "there was problem"
-  #print("currentId: " + str(current_id))
+
   
  return render_template('addinfo.html')
 
