@@ -45,6 +45,7 @@ def index():
    search_input = "%{}%".format(request.form.get('search'))
    search_entries = []
    #add additional search filters
+   #make sure that the entries are only counted once
    search_entries += Entry.query.filter(Entry.first_name.like(search_input)).filter(Entry.approval_status == "approved")
    search_entries += Entry.query.filter(Entry.last_name.like(search_input)).filter(Entry.approval_status == "approved")
    return render_template('index.html', entries=search_entries, s3=s3, bucket=BUCKET)
@@ -112,7 +113,7 @@ def add_info():
   job_sector_input = ""
   for index in range(len(job_sector_list)):
     if index != 0:
-      job_sector_input += "/"
+      job_sector_input += " /"
     job_sector_input += job_sector_list[index]
 
   profile_picture_file = request.files['profilePic']
