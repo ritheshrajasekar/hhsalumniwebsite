@@ -1,0 +1,44 @@
+{% extends 'base.html' %} {% block title%} Administrator Login {% endblock%} {%
+block body%}
+<form class="container" method="POST" enctype="multipart/form-data">
+  <div class="row justify-content-center mt-5">
+    <div class="col-lg-1 col-md-2">
+      <p id="username_labl">User Name:</p>
+    </div>
+    <div class="col-lg-4 col-md-5">
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="username"
+          aria-label="username"
+          id="username"
+          name="username"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="row justify-content-center mt-5">
+    <div class="col-lg-1 col-md-2">
+      <p>Password:</p>
+    </div>
+    <div class="col-lg-4 col-md-5">
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="password"
+          aria-label="password"
+          name="password"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center mt-5">
+    <div class="col-2">
+      <button type="submit" class="btn btn-primary mb-3">Login</button>
+    </div>
+  </div>
+</form>
+{% endblock%}

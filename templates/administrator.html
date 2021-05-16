@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block title%} Home Page {% endblock%} {% block
+{% extends 'base.html' %} {% block title%} Administrator {% endblock%} {% block
 body%}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
@@ -9,8 +9,31 @@ body%}
     });
   });
 </script>
+
 <div class="container">
   <div class="row justify-content-center">
+    <div class="col-3">
+      <form method="POST" enctype="multipart/form-data">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-8">
+              <div class="input-group">
+                <input
+                  id="check_unapproved"
+                  name="check_unapproved"
+                  type="hidden"
+                  value="check_unapproved"
+                />
+                <button type="submit" class="btn btn-check-unapproved mt-5">
+                  Check Unapproved Entries
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="col-2"></div>
     <div class="col-2">
       <img
         src="{{url_for('static', filename='images/hightsown_logo.jpeg')}}"
@@ -18,6 +41,7 @@ body%}
         width="100%"
       />
     </div>
+    <div class="col-5"></div>
   </div>
   <div class="row justify-content-center mt-3">
     <form method="POST" enctype="multipart/form-data">
@@ -53,6 +77,25 @@ body%}
           alt=""
           width="75%;"
         />
+        {% if entry.approval_status == "pending" %}
+        <form method="POST" enctype="multipart/form-data">
+          <input
+            id="approve"
+            name="approve"
+            type="hidden"
+            value="{{entry.id}}"
+          />
+          <button type="submit" class="btn btn-success btn-approve">
+            <div>approve</div>
+          </button>
+        </form>
+        {% endif %}
+        <form method="POST" enctype="multipart/form-data">
+          <input id="delete" name="delete" type="hidden" value="{{entry.id}}" />
+          <button type="submit" class="btn btn-danger btn-delete">
+            <div>delete</div>
+          </button>
+        </form>
       </div>
 
       <div class="col-sm-9 col-md-9 col-lg-9 col-xl-9 col-8">

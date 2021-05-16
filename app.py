@@ -4,6 +4,7 @@ from os import path
 import boto3
 from botocore.client import Config
 
+
 app = Flask(__name__)
 DB_NAME = "database_2.db"
 UPLOAD_FOLDER = './static/images/profile_pics'
@@ -16,7 +17,8 @@ db = SQLAlchemy(app)
 #s3 = boto3.client('s3', aws_access_key_id="AKIA6BDN2SIRY3HW2J4T", aws_secret_access_key="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")
 
 BUCKET = "hhs.alumni"
-
+USER_NAME = "hhs"
+PASSWORD = "hhs"
 
 class Entry(db.Model):
  id = db.Column(db.Integer, primary_key=True)
@@ -42,26 +44,50 @@ def index():
  if request.method == 'POST':
    search_input = "%{}%".format(request.form.get('search'))
    search_entries = []
-   search_entries += Entry.query.filter(Entry.first_name.like(search_input))
-   search_entries += Entry.query.filter(Entry.last_name.like(search_input))
-   print("search entries")
-   print(search_entries)
-   #print(search_input)
-
-   #qry = db.Query(Entry).filter(str(Entry.first_name).lower().contains(search_input.lower()))
-  #  qry = db.Query(Entry).filter(search_input.lower() in str(Entry.first_name).lower())
-  #  print("rithesh hello" + str(qry))
-
-  #  for entry in qry.all():
-  #    search_entries.append(entry)
-   #qry = db.Query(Entry).filter(str(Entry.last_name).lower().contains(search_input.lower()))
-  #  qry = db.Query(Entry).filter(search_input.lower() in str(Entry.last_name).lower())
-  #  for entry in qry.all():
-  #    search_entries.append(entry)
-  #  print(search_entries)
+   #add additional search filters
+   search_entries += Entry.query.filter(Entry.first_name.like(search_input)).filter(Entry.approval_status == "approved")
+   search_entries += Entry.query.filter(Entry.last_name.like(search_input)).filter(Entry.approval_status == "approved")
    return render_template('index.html', entries=search_entries, s3=s3, bucket=BUCKET)
   
  return render_template('index.html', entries=[], s3=s3, bucket=BUCKET)
+
+@app.route('/administrator', methods=['GET', 'POST'])
+def administrator():
+ s3 = boto3.resource('s3')
+ if request.method == 'POST':
+   if request.form.get('approve') != None:
+    entry = Entry.query.get_or_404(request.form.get('approve'))
+    entry.approval_status = "approved"
+    db.session.commit()
+    flash('Approved Entry', category='success')
+   elif request.form.get('delete') != None:
+    entry = Entry.query.get_or_404(request.form.get('delete'))
+    db.session.delete(entry)
+    db.session.commit()
+    flash('Deleted Entry', category='success')
+   elif request.form.get('check_unapproved') != None:
+    pass
+   else:
+    search_input = "%{}%".format(request.form.get('search'))
+    search_entries = []
+    #add additional search filters
+    search_entries += Entry.query.filter(Entry.first_name.like(search_input))
+    search_entries += Entry.query.filter(Entry.last_name.like(search_input))
+    return render_template('administrator.html', entries=search_entries, s3=s3, bucket=BUCKET)
+ unapproved_entries = []
+ unapproved_entries += Entry.query.filter(Entry.approval_status == "pending")
+ print("hello world 2")
+ return render_template('administrator.html', entries=unapproved_entries, s3=s3, bucket=BUCKET)
+
+@app.route('/administrator_login', methods=['GET', 'POST'])
+def administrator_login():
+ if request.method == 'POST':
+  user_name = request.form.get('username').lower()
+  password = request.form.get('password')
+  if user_name == USER_NAME and password == PASSWORD:
+    return redirect('/administrator')
+   
+ return render_template('administrator_login.html')
 
 @app.route('/addinfo', methods=['GET', 'POST'])
 def add_info():
@@ -101,14 +127,10 @@ def add_info():
     except:
       last_id = 0
   
-    #add handling when it is intially NoneType with 0 entries
-    #print("rithesh:" + str(last_id))
     current_id = last_id + 1
     profile_pic_path = str(current_id) + "_" + profile_picture_file.filename 
     s3.Bucket(BUCKET).put_object(Key=profile_pic_path, Body=profile_picture_file)
 
-    #profile_pic_path = path.join(app.config['UPLOAD_FOLDER'], profile_picture_file.filename)
-    #profile_picture_file.save(profile_pic_path) 
   
   college_name_input = ""
   if request.form.get('collegeName') != "":
@@ -116,12 +138,11 @@ def add_info():
   else:
     college_name_input = 'none'
   
-  
-  #try:
+  #add graduation_year into entries
+  #check every single input before creating entry and add flashes
   entry = Entry.query.filter_by(email=email_input).first()
   if entry:
     flash('Email already exists', category='error')
-    print("email already used error")
   else:
     new_entry = Entry(first_name=first_name_input, last_name=last_name_input, email=email_input, college_name=college_name_input, job_sector=job_sector_input, blurb=blurb_input, approval_status=approval_status_input, profile_pic=profile_pic_path)
 

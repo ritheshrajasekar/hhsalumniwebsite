@@ -101,3 +101,16 @@ body {
   background-color: dimgray;
   outline-color: darkviolet;
 }
+
+.btn-approve,
+.btn-delete {
+  width: 100%;
+  margin-top: 7px;
+  margin-bottom: 7px;
+}
+
+.btn-check-unapproved {
+  color: white;
+  background-color: dimgray;
+  outline-color: darkviolet;
+}
