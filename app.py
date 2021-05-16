@@ -113,7 +113,7 @@ def add_info():
   job_sector_input = ""
   for index in range(len(job_sector_list)):
     if index != 0:
-      job_sector_input += " /"
+      job_sector_input += "/ "
     job_sector_input += job_sector_list[index]
 
   profile_picture_file = request.files['profilePic']
