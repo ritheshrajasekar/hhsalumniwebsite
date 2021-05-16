@@ -89,7 +89,28 @@
 } */
 
 body {
-  background: #d8edf0;
+  /* background: #d8edf0; */
+  background: hsla(191, 73%, 93%, 1);
+
+  background: radial-gradient(
+    circle,
+    hsla(191, 73%, 93%, 1) 0%,
+    hsla(240, 92%, 95%, 1) 100%
+  );
+
+  background: -moz-radial-gradient(
+    circle,
+    hsla(191, 73%, 93%, 1) 0%,
+    hsla(240, 92%, 95%, 1) 100%
+  );
+
+  background: -webkit-radial-gradient(
+    circle,
+    hsla(191, 73%, 93%, 1) 0%,
+    hsla(240, 92%, 95%, 1) 100%
+  );
+
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#DFF5FA", endColorstr="#E7E7FE", GradientType=1 );
 }
 .navbar-custom {
   background-color: #f2f2f2;

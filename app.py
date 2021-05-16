@@ -24,12 +24,14 @@ class Entry(db.Model):
  id = db.Column(db.Integer, primary_key=True)
  first_name = db.Column(db.String(100))
  last_name = db.Column(db.String(100))
+ full_name = db.Column(db.String(100))
  college_name = db.Column(db.String(100))
  email = db.Column(db.String(150), unique=True)
  job_sector = db.Column(db.String(150))
  blurb = db.Column(db.String(1000))
  profile_pic = db.Column(db.String(100))
- approval_status = db.Column(db.Integer)
+ graduation_year = db.Column(db.String(20))
+ approval_status = db.Column(db.String(20))
 
 def create_database(app):
     if not path.exists(DB_NAME):
@@ -42,12 +44,51 @@ create_database(app)
 def index():
  s3 = boto3.resource('s3')
  if request.method == 'POST':
-   search_input = "%{}%".format(request.form.get('search'))
+   search_input = "%{}%".format(request.form.get('search')).strip()
    search_entries = []
-   #add additional search filters
-   #make sure that the entries are only counted once
    search_entries += Entry.query.filter(Entry.first_name.like(search_input)).filter(Entry.approval_status == "approved")
-   search_entries += Entry.query.filter(Entry.last_name.like(search_input)).filter(Entry.approval_status == "approved")
+   last_name_entries = Entry.query.filter(Entry.last_name.like(search_input)).filter(Entry.approval_status == "approved")
+   for entry in last_name_entries:
+     if entry in search_entries:
+       pass
+     else:
+       search_entries.append(entry)
+   full_name_entries = Entry.query.filter(Entry.full_name.like(search_input)).filter(Entry.approval_status == "approved")
+   for entry in full_name_entries:
+     if entry in search_entries:
+       pass
+     else:
+       search_entries.append(entry)
+   college_name_entries = Entry.query.filter(Entry.college_name.like(search_input)).filter(Entry.approval_status == "approved")
+   for entry in college_name_entries:
+     if entry in search_entries:
+       pass
+     else:
+       search_entries.append(entry)
+   email_entries = Entry.query.filter(Entry.email.like(search_input)).filter(Entry.approval_status == "approved")
+   for entry in email_entries:
+     if entry in search_entries:
+       pass
+     else:
+       search_entries.append(entry)
+   job_sector_entries = Entry.query.filter(Entry.job_sector.like(search_input)).filter(Entry.approval_status == "approved")
+   for entry in job_sector_entries:
+    if entry in search_entries:
+     pass
+    else:
+     search_entries.append(entry)
+   blurb_entries = Entry.query.filter(Entry.blurb.like(search_input)).filter(Entry.approval_status == "approved")
+   for entry in blurb_entries:
+    if entry in search_entries:
+     pass
+    else:
+     search_entries.append(entry)
+   graduation_year_entries = Entry.query.filter(Entry.graduation_year.like(search_input)).filter(Entry.approval_status == "approved")
+   for entry in graduation_year_entries:
+    if entry in search_entries:
+     pass
+    else:
+     search_entries.append(entry)
    return render_template('index.html', entries=search_entries, s3=s3, bucket=BUCKET)
   
  return render_template('index.html', entries=[], s3=s3, bucket=BUCKET)
@@ -69,15 +110,54 @@ def administrator():
    elif request.form.get('check_unapproved') != None:
     pass
    else:
-    search_input = "%{}%".format(request.form.get('search'))
+    search_input = "%{}%".format(request.form.get('search')).strip()
     search_entries = []
-    #add additional search filters
     search_entries += Entry.query.filter(Entry.first_name.like(search_input))
-    search_entries += Entry.query.filter(Entry.last_name.like(search_input))
+    last_name_entries = Entry.query.filter(Entry.last_name.like(search_input))
+    for entry in last_name_entries:
+      if entry in search_entries:
+        pass
+      else:
+        search_entries.append(entry)
+    full_name_entries = Entry.query.filter(Entry.full_name.like(search_input))
+    for entry in full_name_entries:
+      if entry in search_entries:
+        pass
+      else:
+        search_entries.append(entry)
+    college_name_entries = Entry.query.filter(Entry.college_name.like(search_input))
+    for entry in college_name_entries:
+      if entry in search_entries:
+        pass
+      else:
+        search_entries.append(entry)
+    email_entries = Entry.query.filter(Entry.email.like(search_input))
+    for entry in email_entries:
+      if entry in search_entries:
+        pass
+      else:
+        search_entries.append(entry)
+    job_sector_entries = Entry.query.filter(Entry.job_sector.like(search_input))
+    for entry in job_sector_entries:
+      if entry in search_entries:
+        pass
+      else:
+        search_entries.append(entry)
+    blurb_entries = Entry.query.filter(Entry.blurb.like(search_input))
+    for entry in blurb_entries:
+      if entry in search_entries:
+        pass
+      else:
+        search_entries.append(entry)
+    graduation_year_entries = Entry.query.filter(Entry.graduation_year.like(search_input))
+    for entry in graduation_year_entries:
+      if entry in search_entries:
+        pass
+      else:
+        search_entries.append(entry)
     return render_template('administrator.html', entries=search_entries, s3=s3, bucket=BUCKET)
  unapproved_entries = []
  unapproved_entries += Entry.query.filter(Entry.approval_status == "pending")
- print("hello world 2")
  return render_template('administrator.html', entries=unapproved_entries, s3=s3, bucket=BUCKET)
 
 @app.route('/administrator_login', methods=['GET', 'POST'])
@@ -93,11 +173,12 @@ def administrator_login():
 @app.route('/addinfo', methods=['GET', 'POST'])
 def add_info():
  if request.method == 'POST':
-  first_name_input = request.form.get('firstName')
-  last_name_input = request.form.get('lastName')
+  first_name_input = request.form.get('firstName').strip()
+  last_name_input = request.form.get('lastName').strip()
+  full_name_input = first_name_input + " " + last_name_input
   email_input = request.form.get('email')
   graduation_year_input = request.form.get('graduationYear')
-  blurb_input = request.form.get('blurb')
+  blurb_input = request.form.get('blurb').strip()
   approval_status_input = "pending"
   job_sector_list = []
   if request.form.get('technology') != None:
@@ -135,17 +216,31 @@ def add_info():
   
   college_name_input = ""
   if request.form.get('collegeName') != "":
-    college_name_input = request.form.get('collegeName')
+    college_name_input = request.form.get('collegeName').strip()
   else:
     college_name_input = 'none'
   
   #add graduation_year into entries
   #check every single input before creating entry and add flashes
+  errors = 0
   entry = Entry.query.filter_by(email=email_input).first()
   if entry:
-    flash('Email already exists', category='error')
-  else:
-    new_entry = Entry(first_name=first_name_input, last_name=last_name_input, email=email_input, college_name=college_name_input, job_sector=job_sector_input, blurb=blurb_input, approval_status=approval_status_input, profile_pic=profile_pic_path)
+   errors += 1
+   flash('Email already exists', category='error')
+  if len(first_name_input) < 1 or len(last_name_input) < 1:
+   errors += 1
+   flash('Invalid Name', category='error')   
+  if len(job_sector_input) < 3:
+   errors += 1
+   flash('Please choose career field', category='error')  
+  if len(blurb_input) < 3:
+   errors += 1
+   flash('Please enter blurb', category='error') 
+  elif len(blurb_input) > 400:
+   errors += 1
+   flash('Blurb must be under 400 characters', category='error')     
+  if errors == 0:
+    new_entry = Entry(first_name=first_name_input, last_name=last_name_input, full_name=full_name_input, email=email_input, college_name=college_name_input, job_sector=job_sector_input, blurb=blurb_input, approval_status=approval_status_input, profile_pic=profile_pic_path, graduation_year=graduation_year_input)
 
     db.session.add(new_entry)
     print("here3")
