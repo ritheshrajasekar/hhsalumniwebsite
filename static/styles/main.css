@@ -130,8 +130,14 @@ body {
   margin-bottom: 7px;
 }
 
-.btn-check-unapproved {
+.btn-check-unapproved,
+.btn-logout {
   color: white;
   background-color: dimgray;
   outline-color: darkviolet;
+}
+
+.other-option {
+  width: 50%;
+  height: 15px;
 }

@@ -1,4 +1,5 @@
-from flask import Flask, render_template, url_for, request, redirect, flash
+from flask import Flask, render_template, url_for, request, redirect, flash, session
+import flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
 import boto3
@@ -42,6 +43,7 @@ create_database(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+ session.pop('user', None)
  s3 = boto3.resource('s3')
  if request.method == 'POST':
    search_input = "%{}%".format(request.form.get('search')).strip()
@@ -95,81 +97,91 @@ def index():
 
 @app.route('/administrator', methods=['GET', 'POST'])
 def administrator():
- s3 = boto3.resource('s3')
- if request.method == 'POST':
-   if request.form.get('approve') != None:
-    entry = Entry.query.get_or_404(request.form.get('approve'))
-    entry.approval_status = "approved"
-    db.session.commit()
-    flash('Approved Entry', category='success')
-   elif request.form.get('delete') != None:
-    entry = Entry.query.get_or_404(request.form.get('delete'))
-    db.session.delete(entry)
-    db.session.commit()
-    flash('Deleted Entry', category='success')
-   elif request.form.get('check_unapproved') != None:
-    pass
-   else:
-    search_input = "%{}%".format(request.form.get('search')).strip()
-    search_entries = []
-    search_entries += Entry.query.filter(Entry.first_name.like(search_input))
-    last_name_entries = Entry.query.filter(Entry.last_name.like(search_input))
-    for entry in last_name_entries:
-      if entry in search_entries:
-        pass
-      else:
-        search_entries.append(entry)
-    full_name_entries = Entry.query.filter(Entry.full_name.like(search_input))
-    for entry in full_name_entries:
-      if entry in search_entries:
-        pass
-      else:
-        search_entries.append(entry)
-    college_name_entries = Entry.query.filter(Entry.college_name.like(search_input))
-    for entry in college_name_entries:
-      if entry in search_entries:
-        pass
-      else:
-        search_entries.append(entry)
-    email_entries = Entry.query.filter(Entry.email.like(search_input))
-    for entry in email_entries:
-      if entry in search_entries:
-        pass
-      else:
-        search_entries.append(entry)
-    job_sector_entries = Entry.query.filter(Entry.job_sector.like(search_input))
-    for entry in job_sector_entries:
-      if entry in search_entries:
-        pass
-      else:
-        search_entries.append(entry)
-    blurb_entries = Entry.query.filter(Entry.blurb.like(search_input))
-    for entry in blurb_entries:
-      if entry in search_entries:
-        pass
-      else:
-        search_entries.append(entry)
-    graduation_year_entries = Entry.query.filter(Entry.graduation_year.like(search_input))
-    for entry in graduation_year_entries:
-      if entry in search_entries:
-        pass
-      else:
-        search_entries.append(entry)
-    return render_template('administrator.html', entries=search_entries, s3=s3, bucket=BUCKET)
- unapproved_entries = []
- unapproved_entries += Entry.query.filter(Entry.approval_status == "pending")
- return render_template('administrator.html', entries=unapproved_entries, s3=s3, bucket=BUCKET)
+ if flask.g.user:  
+  s3 = boto3.resource('s3')
+  if request.method == 'POST':
+    if request.form.get('approve') != None:
+      entry = Entry.query.get_or_404(request.form.get('approve'))
+      entry.approval_status = "approved"
+      db.session.commit()
+      flash('Approved Entry', category='success')
+    elif request.form.get('delete') != None:
+      entry = Entry.query.get_or_404(request.form.get('delete'))
+      db.session.delete(entry)
+      db.session.commit()
+      flash('Deleted Entry', category='success')
+    elif request.form.get('check_unapproved') != None:
+      pass
+    else:
+      search_input = "%{}%".format(request.form.get('search')).strip()
+      search_entries = []
+      search_entries += Entry.query.filter(Entry.first_name.like(search_input))
+      last_name_entries = Entry.query.filter(Entry.last_name.like(search_input))
+      for entry in last_name_entries:
+        if entry in search_entries:
+          pass
+        else:
+          search_entries.append(entry)
+      full_name_entries = Entry.query.filter(Entry.full_name.like(search_input))
+      for entry in full_name_entries:
+        if entry in search_entries:
+          pass
+        else:
+          search_entries.append(entry)
+      college_name_entries = Entry.query.filter(Entry.college_name.like(search_input))
+      for entry in college_name_entries:
+        if entry in search_entries:
+          pass
+        else:
+          search_entries.append(entry)
+      email_entries = Entry.query.filter(Entry.email.like(search_input))
+      for entry in email_entries:
+        if entry in search_entries:
+          pass
+        else:
+          search_entries.append(entry)
+      job_sector_entries = Entry.query.filter(Entry.job_sector.like(search_input))
+      for entry in job_sector_entries:
+        if entry in search_entries:
+          pass
+        else:
+          search_entries.append(entry)
+      blurb_entries = Entry.query.filter(Entry.blurb.like(search_input))
+      for entry in blurb_entries:
+        if entry in search_entries:
+          pass
+        else:
+          search_entries.append(entry)
+      graduation_year_entries = Entry.query.filter(Entry.graduation_year.like(search_input))
+      for entry in graduation_year_entries:
+        if entry in search_entries:
+          pass
+        else:
+          search_entries.append(entry)
+      return render_template('administrator.html', entries=search_entries, s3=s3, bucket=BUCKET)
+  unapproved_entries = []
+  unapproved_entries += Entry.query.filter(Entry.approval_status == "pending")
+  return render_template('administrator.html', entries=unapproved_entries, s3=s3, bucket=BUCKET)
+ return redirect(url_for('administrator_login'))
 
 @app.route('/administrator_login', methods=['GET', 'POST'])
 def administrator_login():
  if request.method == 'POST':
+  session.pop('user', None) 
   user_name = request.form.get('username').lower()
   password = request.form.get('password')
   if user_name == USER_NAME and password == PASSWORD:
-    return redirect('/administrator')
+    session['user'] = request.form.get('username').lower()
+    return redirect(url_for('administrator'))
    
  return render_template('administrator_login.html')
 
+@app.before_request
+def before_request():
+  flask.g.user = None
+  if 'user' in session:
+    flask.g.user = session['user']
+  
 @app.route('/addinfo', methods=['GET', 'POST'])
 def add_info():
  if request.method == 'POST':
@@ -181,6 +193,7 @@ def add_info():
   blurb_input = request.form.get('blurb').strip()
   approval_status_input = "pending"
   job_sector_list = []
+  other_option = False
   if request.form.get('technology') != None:
     job_sector_list.append(request.form.get('technology'))
   if request.form.get('business') != None:
@@ -191,6 +204,9 @@ def add_info():
     job_sector_list.append(request.form.get('education'))
   if request.form.get('government') != None:
     job_sector_list.append(request.form.get('government'))
+  if request.form.get('other') != None:
+    other_option = True
+    job_sector_list.append(request.form.get('otherOption'))
   job_sector_input = ""
   for index in range(len(job_sector_list)):
     if index != 0:
@@ -238,7 +254,10 @@ def add_info():
    flash('Please enter blurb', category='error') 
   elif len(blurb_input) > 400:
    errors += 1
-   flash('Blurb must be under 400 characters', category='error')     
+   flash('Blurb must be under 400 characters', category='error')
+  if other_option and len(request.form.get('otherOption').strip()) < 1:
+   errors += 1
+   flash('Enter other career field selected', category='error')          
   if errors == 0:
     new_entry = Entry(first_name=first_name_input, last_name=last_name_input, full_name=full_name_input, email=email_input, college_name=college_name_input, job_sector=job_sector_input, blurb=blurb_input, approval_status=approval_status_input, profile_pic=profile_pic_path, graduation_year=graduation_year_input)
 
