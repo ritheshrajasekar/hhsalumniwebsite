@@ -173,6 +173,8 @@ def administrator_login():
   if user_name == USER_NAME and password == PASSWORD:
     session['user'] = request.form.get('username').lower()
     return redirect(url_for('administrator'))
+  else:
+    flash('Incorrect username or password', category='error') 
    
  return render_template('administrator_login.html')
 
