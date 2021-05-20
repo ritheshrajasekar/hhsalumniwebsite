@@ -133,9 +133,9 @@ def administrator():
         print("print hello world 2")
         return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=False, count=count)
     elif request.form.get('pageNext') != None:
+      print("hello savior 2")
       print(request.form.get('pageNext'))
       admin_user_page = int(request.form.get('pageNext'))
-      print("hello savior 2")
       if admin_path_search == 1:
         search_entries = Entry.query.filter((Entry.first_name.like(admin_search_input)) | (Entry.last_name.like(admin_search_input)) | (Entry.full_name.like(admin_search_input)) | (Entry.college_name.like(admin_search_input)) | (Entry.email.like(admin_search_input)) | (Entry.job_sector.like(admin_search_input)) | (Entry.blurb.like(admin_search_input)) | (Entry.graduation_year.like(admin_search_input)))
         count = search_entries.count()
@@ -152,7 +152,7 @@ def administrator():
     # make sure delete and approve allows them to see rest of entries when done  
     else:
       admin_path_search = 1
-      admin_search_input = request.form.get('search').strip()
+      admin_search_input = "%{}%".format(request.form.get('search')).strip()
       search_entries = Entry.query.filter((Entry.first_name.like(admin_search_input)) | (Entry.last_name.like(admin_search_input)) | (Entry.full_name.like(admin_search_input)) | (Entry.college_name.like(admin_search_input)) | (Entry.email.like(admin_search_input)) | (Entry.job_sector.like(admin_search_input)) | (Entry.blurb.like(admin_search_input)) | (Entry.graduation_year.like(admin_search_input)))
       count = search_entries.count()
       admin_user_page = 1
