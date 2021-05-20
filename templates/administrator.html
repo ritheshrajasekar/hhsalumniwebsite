@@ -11,64 +11,44 @@ body%}
 </script>
 
 <div class="container">
-  <div class="row justify-content-center">
-    <div class="col-3">
+  <div class="row justify-content-center mt-3">
+    <div class="col-2"></div>
+    <div class="col-8">
       <form method="POST" enctype="multipart/form-data">
-        <div class="container">
-          <div class="row justify-content-center">
-            <div class="col-8">
-              <div class="input-group">
-                <input
-                  id="check_unapproved"
-                  name="check_unapproved"
-                  type="hidden"
-                  value="check_unapproved"
-                />
-                <button type="submit" class="btn btn-check-unapproved mt-5">
-                  Check Unapproved Entries
-                </button>
-              </div>
-            </div>
-          </div>
+        <div class="input-group">
+          <input
+            type="search"
+            name="search"
+            class="form-control rounded"
+            placeholder="Search"
+            aria-label="Search"
+            aria-describedby="search-addon"
+          />
+          <button type="submit" class="btn btn-custom">search</button>
         </div>
       </form>
     </div>
-    <div class="col-2"></div>
     <div class="col-2">
-      <img
-        src="{{url_for('static', filename='images/hightsown_logo.jpeg')}}"
-        alt=""
-        width="100%"
-      />
-    </div>
-    <div class="col-5"></div>
-  </div>
-  <div class="row justify-content-center mt-3">
-    <form method="POST" enctype="multipart/form-data">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-8">
-            <div class="input-group">
-              <input
-                type="search"
-                name="search"
-                class="form-control rounded"
-                placeholder="Search"
-                aria-label="Search"
-                aria-describedby="search-addon"
-              />
-              <button type="submit" class="btn btn-custom">search</button>
-            </div>
-          </div>
+      <form method="POST" enctype="multipart/form-data">
+        <div class="input-group">
+          <input
+            id="check_unapproved"
+            name="check_unapproved"
+            type="hidden"
+            value="check_unapproved"
+          />
+          <button type="submit" class="btn btn-check-unapproved">
+            All Pending Entries
+          </button>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 
-  {% if entries|length > 0 %}
+  {% if count > 0 %}
   <div class="container-fluid mt-5">
     <hr />
-    {% for entry in entries %}
+    {% for entry in entries.items %}
     <div class="row mt-3 g-3">
       <div class="col-sm-3 col-md-2 col-lg-2 col-xl-1 col-4">
         {% if entry.profile_pic == "none" %}
@@ -123,8 +103,43 @@ body%}
     </div>
     <hr />
     {% endfor %}
+    <!-- Pagination Links-->
+    <div class="text-right">
+      <form method="POST" enctype="multipart/form-data" style='display:inline;'>
+        <input id="pagePrevious" name="pagePrevious" type="hidden" value={{entries.prev_num}} />
+        <button type="submit" class="btn btn-outline-dark
+        {%
+        if
+        entries.page
+        ==
+        1
+        %}disabled{%
+        endif
+        %}">
+          <div>&laquo;</div>
+        </button>
+      </form>
+      <form method="POST" enctype="multipart/form-data" style='display:inline;'>
+        <input id="pageNext" name="pageNext" type="hidden" value={{entries.next_num}} />
+        <button type="submit" class="btn btn-outline-dark
+        {%
+        if
+        entries.page
+        ==
+        entries.pages
+        %}disabled{%
+        endif
+        %}">
+          <div>&raquo;</div>
+        </button>
+      </form>
+    </div>
+    <p class="text-right mt-3">
+      Showing page {{ entries.page }} of {{ entries.pages }}
+    </p>
   </div>
-  {% else %}
+  </div>
+  {% elif search %}
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-4 col-md-5">
