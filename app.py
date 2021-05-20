@@ -22,10 +22,10 @@ USER_NAME = "hhs"
 PASSWORD = "hhs"
 PER_PAGE = 5
 
-search_input = None
+search_input = "machine"
 user_page = 1
 
-admin_search_input = None
+admin_search_input = "machine"
 admin_path_search = 0
 admin_user_page = 1
 
