@@ -122,13 +122,13 @@ def administrator():
       if admin_path_search == 1:
         search_entries = Entry.query.filter((Entry.first_name.like(admin_search_input)) | (Entry.last_name.like(admin_search_input)) | (Entry.full_name.like(admin_search_input)) | (Entry.college_name.like(admin_search_input)) | (Entry.email.like(admin_search_input)) | (Entry.job_sector.like(admin_search_input)) | (Entry.blurb.like(admin_search_input)) | (Entry.graduation_year.like(admin_search_input)))
         count = search_entries.count()
-        admin_search_entries = search_entries.paginate(page=admin_user_page, per_page=PER_PAGE)
+        admin_search_entries = search_entries.paginate(page=int(admin_user_page), per_page=PER_PAGE)
         print("print hello world 1")
         return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=True, count=count)
       else:
         unapproved_entries = Entry.query.filter(Entry.approval_status == "pending")
         count = unapproved_entries.count()
-        admin_search_entries = unapproved_entries.paginate(page=admin_user_page, per_page=PER_PAGE)
+        admin_search_entries = unapproved_entries.paginate(page=int(admin_user_page), per_page=PER_PAGE)
         print("print hello world 2")
         return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=False, count=count)
     elif request.form.get('pageNext') != None:
@@ -137,13 +137,13 @@ def administrator():
       if admin_path_search == 1:
         search_entries = Entry.query.filter((Entry.first_name.like(admin_search_input)) | (Entry.last_name.like(admin_search_input)) | (Entry.full_name.like(admin_search_input)) | (Entry.college_name.like(admin_search_input)) | (Entry.email.like(admin_search_input)) | (Entry.job_sector.like(admin_search_input)) | (Entry.blurb.like(admin_search_input)) | (Entry.graduation_year.like(admin_search_input)))
         count = search_entries.count()
-        admin_search_entries = search_entries.paginate(page=admin_user_page, per_page=PER_PAGE)
+        admin_search_entries = search_entries.paginate(page=int(admin_user_page), per_page=PER_PAGE)
         print("print hello world 3")
         return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=True, count=count)
       else:
         unapproved_entries = Entry.query.filter(Entry.approval_status == "pending")
         count = unapproved_entries.count()
-        admin_search_entries = unapproved_entries.paginate(page=admin_user_page, per_page=PER_PAGE)
+        admin_search_entries = unapproved_entries.paginate(page=int(admin_user_page), per_page=PER_PAGE)
         print("print hello world 4")
         return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=False, count=count)
 
