@@ -121,7 +121,9 @@ def administrator():
       print(request.form.get('pagePrevious'))
       admin_user_page += 1
       if admin_path_search == 1:
+        print("here1")
         search_entries = Entry.query.filter((Entry.first_name.like(admin_search_input)) | (Entry.last_name.like(admin_search_input)) | (Entry.full_name.like(admin_search_input)) | (Entry.college_name.like(admin_search_input)) | (Entry.email.like(admin_search_input)) | (Entry.job_sector.like(admin_search_input)) | (Entry.blurb.like(admin_search_input)) | (Entry.graduation_year.like(admin_search_input)))
+        print("here2")
         count = search_entries.count()
         admin_search_entries = search_entries.paginate(page=admin_user_page, per_page=PER_PAGE)
         print("print hello world 1")
@@ -137,7 +139,9 @@ def administrator():
       print(request.form.get('pageNext'))
       admin_user_page += 1
       if admin_path_search == 1:
+        print("here1")
         search_entries = Entry.query.filter((Entry.first_name.like(admin_search_input)) | (Entry.last_name.like(admin_search_input)) | (Entry.full_name.like(admin_search_input)) | (Entry.college_name.like(admin_search_input)) | (Entry.email.like(admin_search_input)) | (Entry.job_sector.like(admin_search_input)) | (Entry.blurb.like(admin_search_input)) | (Entry.graduation_year.like(admin_search_input)))
+        print("here2")
         count = search_entries.count()
         admin_search_entries = search_entries.paginate(page=admin_user_page, per_page=PER_PAGE)
         print("print hello world 3")
