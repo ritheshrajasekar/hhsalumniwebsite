@@ -119,7 +119,7 @@ def administrator():
     elif request.form.get('pagePrevious') != None:
       print("hello savior")
       print(request.form.get('pagePrevious'))
-      admin_user_page = int(request.form.get('pagePrevious'))
+      admin_user_page += 1
       if admin_path_search == 1:
         search_entries = Entry.query.filter((Entry.first_name.like(admin_search_input)) | (Entry.last_name.like(admin_search_input)) | (Entry.full_name.like(admin_search_input)) | (Entry.college_name.like(admin_search_input)) | (Entry.email.like(admin_search_input)) | (Entry.job_sector.like(admin_search_input)) | (Entry.blurb.like(admin_search_input)) | (Entry.graduation_year.like(admin_search_input)))
         count = search_entries.count()
@@ -135,7 +135,7 @@ def administrator():
     elif request.form.get('pageNext') != None:
       print("hello savior 2")
       print(request.form.get('pageNext'))
-      admin_user_page = int(request.form.get('pageNext'))
+      admin_user_page += 1
       if admin_path_search == 1:
         search_entries = Entry.query.filter((Entry.first_name.like(admin_search_input)) | (Entry.last_name.like(admin_search_input)) | (Entry.full_name.like(admin_search_input)) | (Entry.college_name.like(admin_search_input)) | (Entry.email.like(admin_search_input)) | (Entry.job_sector.like(admin_search_input)) | (Entry.blurb.like(admin_search_input)) | (Entry.graduation_year.like(admin_search_input)))
         count = search_entries.count()

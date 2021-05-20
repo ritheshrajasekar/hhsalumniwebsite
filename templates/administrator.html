@@ -106,7 +106,7 @@ body%}
     <!-- Pagination Links-->
     <div class="text-right">
       <form method="POST" enctype="multipart/form-data" style='display:inline;'>
-        <input id="pagePrevious" name="pagePrevious" type="hidden" value={{entries.prev_num}} />
+        <input id="pagePrevious" name="pagePrevious" type="hidden" value="pagePrevious" />
         <button type="submit" class="btn btn-outline-dark
         {%
         if
@@ -120,7 +120,7 @@ body%}
         </button>
       </form>
       <form method="POST" enctype="multipart/form-data" style='display:inline;'>
-        <input id="pageNext" name="pageNext" type="hidden" value={{entries.next_num}} />
+        <input id="pageNext" name="pageNext" type="hidden" value="pageNext" />
         <button type="submit" class="btn btn-outline-dark
         {%
         if
