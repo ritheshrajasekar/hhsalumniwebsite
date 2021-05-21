@@ -156,6 +156,7 @@ def administrator():
       print(admin_search_input)
       print('current admin search path:')
       print(admin_path_search)
+      print(request.form.get('admin_path_search'))
       if request.form.get('admin_path_search') == True:
         search_entries = Entry.query.filter((Entry.first_name.like(admin_search_input)) | (Entry.last_name.like(admin_search_input)) | (Entry.full_name.like(admin_search_input)) | (Entry.college_name.like(admin_search_input)) | (Entry.email.like(admin_search_input)) | (Entry.job_sector.like(admin_search_input)) | (Entry.blurb.like(admin_search_input)) | (Entry.graduation_year.like(admin_search_input)))
         count = search_entries.count()
