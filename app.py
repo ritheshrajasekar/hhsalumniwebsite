@@ -57,7 +57,7 @@ def index():
  s3 = boto3.resource('s3')
  if request.method == 'POST':
    if request.form.get('searchHidden') != None:
-    search_input = "%{}%".format(request.form.get('search')).strip()
+    search_input = "%{}%".format(request.form.get('search').strip())
     search_entries = Entry.query.filter((Entry.first_name.like(search_input)) | (Entry.last_name.like(search_input)) | (Entry.full_name.like(search_input)) | (Entry.college_name.like(search_input)) | (Entry.email.like(search_input)) | (Entry.job_sector.like(search_input)) | (Entry.blurb.like(search_input)) | (Entry.graduation_year.like(search_input))).filter(Entry.approval_status == "approved")
     count = search_entries.count()
     user_page = 1
@@ -171,7 +171,7 @@ def administrator():
 
     # make sure delete and approve allows them to see rest of entries when done  
     else:
-      admin_search_input = "%{}%".format(request.form.get('search')).strip()
+      admin_search_input = "%{}%".format(request.form.get('search').strip())
       search_entries = Entry.query.filter((Entry.first_name.like(admin_search_input)) | (Entry.last_name.like(admin_search_input)) | (Entry.full_name.like(admin_search_input)) | (Entry.college_name.like(admin_search_input)) | (Entry.email.like(admin_search_input)) | (Entry.job_sector.like(admin_search_input)) | (Entry.blurb.like(admin_search_input)) | (Entry.graduation_year.like(admin_search_input)))
       count = search_entries.count()
       admin_user_page = 1
