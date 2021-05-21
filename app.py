@@ -128,6 +128,12 @@ def administrator():
       pass
     elif request.form.get('pagePrevious') != None:
       admin_user_page = int(request.form.get('pagePrevious'))
+      print('pageprevious current page:')
+      print(admin_user_page)
+      print('current search phrase:')
+      print(admin_search_input)
+      print('current admin search path:')
+      print(admin_path_search)
       if admin_path_search == 1:
         search_entries = Entry.query.filter((Entry.first_name.like(admin_search_input)) | (Entry.last_name.like(admin_search_input)) | (Entry.full_name.like(admin_search_input)) | (Entry.college_name.like(admin_search_input)) | (Entry.email.like(admin_search_input)) | (Entry.job_sector.like(admin_search_input)) | (Entry.blurb.like(admin_search_input)) | (Entry.graduation_year.like(admin_search_input)))
         count = search_entries.count()
@@ -140,6 +146,12 @@ def administrator():
         return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=False, count=count)
     elif request.form.get('pageNext') != None:
       admin_user_page = int(request.form.get('pageNext'))
+      print('pagenext current page:')
+      print(admin_user_page)
+      print('current search phrase:')
+      print(admin_search_input)
+      print('current admin search path:')
+      print(admin_path_search)
       if admin_path_search == 1:
         search_entries = Entry.query.filter((Entry.first_name.like(admin_search_input)) | (Entry.last_name.like(admin_search_input)) | (Entry.full_name.like(admin_search_input)) | (Entry.college_name.like(admin_search_input)) | (Entry.email.like(admin_search_input)) | (Entry.job_sector.like(admin_search_input)) | (Entry.blurb.like(admin_search_input)) | (Entry.graduation_year.like(admin_search_input)))
         count = search_entries.count()
