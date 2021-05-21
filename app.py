@@ -92,92 +92,94 @@ def administrator():
   s3 = boto3.resource('s3')
   if request.method == 'POST':
     if request.form.get('approve') != None:
+      admin_search_input = request.form.get('admin_search_input')
       entry = Entry.query.get_or_404(request.form.get('approve'))
       entry.approval_status = "approved"
       db.session.commit()
       flash('Approved Entry', category='success')
-      if admin_path_search == 1:
+      if request.form.get('admin_path_search') == True:
         search_entries = Entry.query.filter((Entry.first_name.like(admin_search_input)) | (Entry.last_name.like(admin_search_input)) | (Entry.full_name.like(admin_search_input)) | (Entry.college_name.like(admin_search_input)) | (Entry.email.like(admin_search_input)) | (Entry.job_sector.like(admin_search_input)) | (Entry.blurb.like(admin_search_input)) | (Entry.graduation_year.like(admin_search_input)))
         count = search_entries.count()
         admin_search_entries = search_entries.paginate(page=admin_user_page, per_page=PER_PAGE)
-        return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=True, count=count)
+        return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=True, count=count, admin_search_input=admin_search_input)
       else:
         admin_user_page = 1
         unapproved_entries = Entry.query.filter(Entry.approval_status == "pending")
         count = unapproved_entries.count()
         admin_search_entries = unapproved_entries.paginate(page=admin_user_page, per_page=PER_PAGE)
-        return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=False, count=count)
+        return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=False, count=count, admin_search_input="No search")
     elif request.form.get('delete') != None:
+      admin_search_input = request.form.get('admin_search_input')
       entry = Entry.query.get_or_404(request.form.get('delete'))
       db.session.delete(entry)
       db.session.commit()
       flash('Deleted Entry', category='success')
-      if admin_path_search == 1:
+      if request.form.get('admin_path_search') == True:
         admin_user_page = 1
         search_entries = Entry.query.filter((Entry.first_name.like(admin_search_input)) | (Entry.last_name.like(admin_search_input)) | (Entry.full_name.like(admin_search_input)) | (Entry.college_name.like(admin_search_input)) | (Entry.email.like(admin_search_input)) | (Entry.job_sector.like(admin_search_input)) | (Entry.blurb.like(admin_search_input)) | (Entry.graduation_year.like(admin_search_input)))
         count = search_entries.count()
         admin_search_entries = search_entries.paginate(page=admin_user_page, per_page=PER_PAGE)
-        return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=True, count=count)
+        return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=True, count=count, admin_search_input=admin_search_input)
       else:
         admin_user_page = 1
         unapproved_entries = Entry.query.filter(Entry.approval_status == "pending")
         count = unapproved_entries.count()
         admin_search_entries = unapproved_entries.paginate(page=admin_user_page, per_page=PER_PAGE)
-        return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=False, count=count)
+        return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=False, count=count, admin_search_input="No search")
     elif request.form.get('check_unapproved') != None:
       pass
     elif request.form.get('pagePrevious') != None:
       admin_user_page = int(request.form.get('pagePrevious'))
+      admin_search_input = request.form.get('admin_search_input')
       print('pageprevious current page:')
       print(admin_user_page)
       print('current search phrase:')
       print(admin_search_input)
       print('current admin search path:')
       print(admin_path_search)
-      if admin_path_search == 1:
+      if request.form.get('admin_path_search') == True:
         search_entries = Entry.query.filter((Entry.first_name.like(admin_search_input)) | (Entry.last_name.like(admin_search_input)) | (Entry.full_name.like(admin_search_input)) | (Entry.college_name.like(admin_search_input)) | (Entry.email.like(admin_search_input)) | (Entry.job_sector.like(admin_search_input)) | (Entry.blurb.like(admin_search_input)) | (Entry.graduation_year.like(admin_search_input)))
         count = search_entries.count()
         admin_search_entries = search_entries.paginate(page=admin_user_page, per_page=PER_PAGE)
-        return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=True, count=count)
+        return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=True, count=count, admin_search_input=admin_search_input)
       else:
         unapproved_entries = Entry.query.filter(Entry.approval_status == "pending")
         count = unapproved_entries.count()
         admin_search_entries = unapproved_entries.paginate(page=admin_user_page, per_page=PER_PAGE)
-        return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=False, count=count)
+        return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=False, count=count, admin_search_input="No search")
     elif request.form.get('pageNext') != None:
       admin_user_page = int(request.form.get('pageNext'))
+      admin_search_input = request.form.get('admin_search_input')
       print('pagenext current page:')
       print(admin_user_page)
       print('current search phrase:')
       print(admin_search_input)
       print('current admin search path:')
       print(admin_path_search)
-      if admin_path_search == 1:
+      if request.form.get('admin_path_search') == True:
         search_entries = Entry.query.filter((Entry.first_name.like(admin_search_input)) | (Entry.last_name.like(admin_search_input)) | (Entry.full_name.like(admin_search_input)) | (Entry.college_name.like(admin_search_input)) | (Entry.email.like(admin_search_input)) | (Entry.job_sector.like(admin_search_input)) | (Entry.blurb.like(admin_search_input)) | (Entry.graduation_year.like(admin_search_input)))
         count = search_entries.count()
         admin_search_entries = search_entries.paginate(page=admin_user_page, per_page=PER_PAGE)
-        return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=True, count=count)
+        return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=True, count=count, admin_search_input=admin_search_input)
       else:
         unapproved_entries = Entry.query.filter(Entry.approval_status == "pending")
         count = unapproved_entries.count()
         admin_search_entries = unapproved_entries.paginate(page=admin_user_page, per_page=PER_PAGE)
-        return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=False, count=count)
+        return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=False, count=count, admin_search_input="No search")
 
     # make sure delete and approve allows them to see rest of entries when done  
     else:
-      admin_path_search = 1
       admin_search_input = "%{}%".format(request.form.get('search')).strip()
       search_entries = Entry.query.filter((Entry.first_name.like(admin_search_input)) | (Entry.last_name.like(admin_search_input)) | (Entry.full_name.like(admin_search_input)) | (Entry.college_name.like(admin_search_input)) | (Entry.email.like(admin_search_input)) | (Entry.job_sector.like(admin_search_input)) | (Entry.blurb.like(admin_search_input)) | (Entry.graduation_year.like(admin_search_input)))
       count = search_entries.count()
       admin_user_page = 1
       admin_search_entries = search_entries.paginate(page=admin_user_page, per_page=PER_PAGE)
-      return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=True, count=count)
-  admin_path_search = 0
+      return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=True, count=count, admin_search_input=admin_search_input)
   admin_user_page = 1
   unapproved_entries = Entry.query.filter(Entry.approval_status == "pending")
   count = unapproved_entries.count()
   admin_search_entries = unapproved_entries.paginate(page=admin_user_page, per_page=PER_PAGE)
-  return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=False, count=count)
+  return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=False, count=count, admin_search_input="No search")
  return redirect(url_for('administrator_login'))
 
 @app.route('/administrator_login', methods=['GET', 'POST'])

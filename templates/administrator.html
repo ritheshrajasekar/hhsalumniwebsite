@@ -73,6 +73,8 @@ body%}
             type="hidden"
             value="{{entry.id}}"
           />
+          <input id="admin_search_input" name="admin_search_input" type="hidden" value={{admin_search_input}} />
+          <input id="admin_path_search" name="admin_path_search" type="hidden" value={{search}} />
           <button type="submit" class="btn btn-success btn-approve">
             <div>approve</div>
           </button>
@@ -80,6 +82,8 @@ body%}
         {% endif %}
         <form method="POST" enctype="multipart/form-data">
           <input id="delete" name="delete" type="hidden" value="{{entry.id}}" />
+          <input id="admin_search_input" name="admin_search_input" type="hidden" value={{admin_search_input}} />
+          <input id="admin_path_search" name="admin_path_search" type="hidden" value={{search}} />
           <button type="submit" class="btn btn-danger btn-delete">
             <div>delete</div>
           </button>
@@ -107,6 +111,8 @@ body%}
     <div class="text-right">
       <form method="POST" enctype="multipart/form-data" style='display:inline;'>
         <input id="pagePrevious" name="pagePrevious" type="hidden" value={{entries.prev_num}} />
+        <input id="admin_search_input" name="admin_search_input" type="hidden" value={{admin_search_input}} />
+        <input id="admin_path_search" name="admin_path_search" type="hidden" value={{search}} />
         <button type="submit" class="btn btn-outline-dark
         {%
         if
@@ -121,6 +127,8 @@ body%}
       </form>
       <form method="POST" enctype="multipart/form-data" style='display:inline;'>
         <input id="pageNext" name="pageNext" type="hidden" value={{entries.next_num}} />
+        <input id="admin_search_input" name="admin_search_input" type="hidden" value={{admin_search_input}} />
+        <input id="admin_path_search" name="admin_path_search" type="hidden" value={{search}} />
         <button type="submit" class="btn btn-outline-dark
         {%
         if
