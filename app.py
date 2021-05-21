@@ -97,7 +97,7 @@ def administrator():
       entry.approval_status = "approved"
       db.session.commit()
       flash('Approved Entry', category='success')
-      if request.form.get('admin_path_search') == True:
+      if request.form.get('admin_path_search') == 'True':
         search_entries = Entry.query.filter((Entry.first_name.like(admin_search_input)) | (Entry.last_name.like(admin_search_input)) | (Entry.full_name.like(admin_search_input)) | (Entry.college_name.like(admin_search_input)) | (Entry.email.like(admin_search_input)) | (Entry.job_sector.like(admin_search_input)) | (Entry.blurb.like(admin_search_input)) | (Entry.graduation_year.like(admin_search_input)))
         count = search_entries.count()
         admin_search_entries = search_entries.paginate(page=admin_user_page, per_page=PER_PAGE)
@@ -114,7 +114,7 @@ def administrator():
       db.session.delete(entry)
       db.session.commit()
       flash('Deleted Entry', category='success')
-      if request.form.get('admin_path_search') == True:
+      if request.form.get('admin_path_search') == 'True':
         admin_user_page = 1
         search_entries = Entry.query.filter((Entry.first_name.like(admin_search_input)) | (Entry.last_name.like(admin_search_input)) | (Entry.full_name.like(admin_search_input)) | (Entry.college_name.like(admin_search_input)) | (Entry.email.like(admin_search_input)) | (Entry.job_sector.like(admin_search_input)) | (Entry.blurb.like(admin_search_input)) | (Entry.graduation_year.like(admin_search_input)))
         count = search_entries.count()
@@ -137,7 +137,7 @@ def administrator():
       print(admin_search_input)
       print('current admin search path:')
       print(admin_path_search)
-      if request.form.get('admin_path_search') == True:
+      if request.form.get('admin_path_search') == 'True':
         search_entries = Entry.query.filter((Entry.first_name.like(admin_search_input)) | (Entry.last_name.like(admin_search_input)) | (Entry.full_name.like(admin_search_input)) | (Entry.college_name.like(admin_search_input)) | (Entry.email.like(admin_search_input)) | (Entry.job_sector.like(admin_search_input)) | (Entry.blurb.like(admin_search_input)) | (Entry.graduation_year.like(admin_search_input)))
         count = search_entries.count()
         admin_search_entries = search_entries.paginate(page=admin_user_page, per_page=PER_PAGE)
@@ -158,7 +158,7 @@ def administrator():
       print(admin_path_search)
       print(request.form.get('admin_path_search'))
       print(type(request.form.get('admin_path_search')))
-      if request.form.get('admin_path_search') == True:
+      if request.form.get('admin_path_search') == 'True':
         search_entries = Entry.query.filter((Entry.first_name.like(admin_search_input)) | (Entry.last_name.like(admin_search_input)) | (Entry.full_name.like(admin_search_input)) | (Entry.college_name.like(admin_search_input)) | (Entry.email.like(admin_search_input)) | (Entry.job_sector.like(admin_search_input)) | (Entry.blurb.like(admin_search_input)) | (Entry.graduation_year.like(admin_search_input)))
         count = search_entries.count()
         admin_search_entries = search_entries.paginate(page=admin_user_page, per_page=PER_PAGE)
