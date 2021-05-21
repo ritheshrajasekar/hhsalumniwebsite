@@ -160,6 +160,7 @@ body%}
     <div class="text-right">
       <form method="POST" enctype="multipart/form-data" style='display:inline;'>
         <input id="pagePrevious" name="pagePrevious" type="hidden" value={{entries.prev_num}} />
+        <input id="search_input" name="search_input" type="hidden" value={{search_input}} />
         <button type="submit" class="btn btn-outline-dark
         {%
         if
@@ -174,6 +175,7 @@ body%}
       </form>
       <form method="POST" enctype="multipart/form-data" style='display:inline;'>
         <input id="pageNext" name="pageNext" type="hidden" value={{entries.next_num}} />
+        <input id="search_input" name="search_input" type="hidden" value={{search_input}} />
         <button type="submit" class="btn btn-outline-dark
         {%
         if
