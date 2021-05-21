@@ -62,7 +62,7 @@ def index():
     count = search_entries.count()
     user_page = 1
     user_search_entries = search_entries.paginate(page=user_page, per_page=PER_PAGE)
-    return render_template('index.html', entries=user_search_entries, s3=s3, bucket=BUCKET, search=True, search_input=search_input)
+    return render_template('index.html', entries=user_search_entries, s3=s3, bucket=BUCKET, search=True, search_input=search_input, count=count)
    elif request.form.get('pagePrevious') != None:
     print('page previous entered')
     search_input = request.form.get('search_input')
