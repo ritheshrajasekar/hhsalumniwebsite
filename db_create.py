@@ -1,3 +1,3 @@
-from app import db
+from app import db, app
 
-db.create_all()
+db.create_all(app=app)
