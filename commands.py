@@ -1,4 +1,4 @@
-from .app import db
+from .app import db, Entry
 import click
 from flask.cli import with_appcontext
 

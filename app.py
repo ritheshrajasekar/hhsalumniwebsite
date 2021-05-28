@@ -1,3 +1,4 @@
+from commands import create_tables
 from flask import Flask, render_template, url_for, request, redirect, flash, session
 import flask
 from flask_sqlalchemy import SQLAlchemy
@@ -13,6 +14,7 @@ UPLOAD_FOLDER = './static/images/profile_pics'
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SECRET_KEY'] = secret_key
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.cli.add_command(create_tables)
 
 db = SQLAlchemy(app)
 
