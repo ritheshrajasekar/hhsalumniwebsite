@@ -1,4 +1,3 @@
-from commands import create_tables
 from flask import Flask, render_template, url_for, request, redirect, flash, session
 import flask
 from flask_sqlalchemy import SQLAlchemy
