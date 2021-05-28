@@ -10,7 +10,7 @@ from settings import *
 app = Flask(__name__)
 DB_NAME = "database_2.db"
 UPLOAD_FOLDER = './static/images/profile_pics'
-app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SECRET_KEY'] = secret_key
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -42,12 +42,12 @@ class Entry(db.Model):
  graduation_year = db.Column(db.String(20))
  approval_status = db.Column(db.String(20))
 
-def create_database(app):
-    if not path.exists(DB_NAME):
-        db.create_all(app=app)
-        print('Created Successfully Database!')
+# def create_database(app):
+#     if not path.exists(DB_NAME):
+#         db.create_all(app=app)
+#         print('Created Successfully Database!')
 
-create_database(app)
+# create_database(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
