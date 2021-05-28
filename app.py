@@ -5,6 +5,7 @@ from os import path
 import boto3
 from botocore.client import Config
 from settings import *
+from commands import create_tables
 
 
 app = Flask(__name__)
@@ -15,6 +16,7 @@ app.config['SECRET_KEY'] = secret_key
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 db = SQLAlchemy(app)
+app.cli.add_command(create_tables)
 
 
 BUCKET = bucket
@@ -49,9 +51,6 @@ class Entry(db.Model):
 
 # create_database(app)
 
-if create_database == 'Yes':
-  db.create_all()
-  print('Created Successfully Database!')
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
