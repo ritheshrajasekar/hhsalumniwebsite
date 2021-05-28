@@ -6,7 +6,6 @@ from os import path
 import boto3
 from botocore.client import Config
 from settings import *
-from .commands import create_tables
 
 
 app = Flask(__name__)
@@ -15,7 +14,6 @@ UPLOAD_FOLDER = './static/images/profile_pics'
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SECRET_KEY'] = secret_key
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.cli.add_command(create_tables)
 
 db = SQLAlchemy(app)
 
