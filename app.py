@@ -235,8 +235,8 @@ def update():
       #add graduation_year into entries
       #check every single input before creating entry and add flashes
       errors = 0
-      entry = Entry.query.filter_by(email=email_input).first()
-      if entry and entry.email != email_input:
+      email_entry = Entry.query.filter_by(email=email_input).first()
+      if email_entry and entry.email != email_input:
         errors += 1
         flash('Email already exists', category='error')
       if len(email_input) < 1:
