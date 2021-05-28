@@ -20,4 +20,4 @@ app.config['SECRET_KEY'] = secret_key
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 db = SQLAlchemy(app)
-db.create_all()
+db.create_all(app=app)
