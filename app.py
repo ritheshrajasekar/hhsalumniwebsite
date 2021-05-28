@@ -15,7 +15,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SECRET_KEY'] = secret_key
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-db = SQLAlchemy(app)
+# db = SQLAlchemy(app)
+db = SQLAlchemy()
+db.init_app(app)
 
 
 BUCKET = bucket
