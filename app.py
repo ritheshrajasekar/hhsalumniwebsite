@@ -45,13 +45,8 @@ class Entry(db.Model):
 #     if not path.exists(DB_NAME):
 #         db.create_all(app=app)
 #         print('Created Successfully Database!')
-def create_database(app):
-  if create_database == "Yes":
-    print("got here")
-    db.create_all(app=app)
-    print('Created Successfully Database!')
 
-create_database(app)
+# create_database(app)
 
 
 @app.route('/', methods=['GET', 'POST'])
