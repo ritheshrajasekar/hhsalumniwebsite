@@ -5,7 +5,7 @@ from os import path
 import boto3
 from botocore.client import Config
 from settings import *
-from commands import create_tables
+# from commands import create_tables
 
 
 app = Flask(__name__)
@@ -16,7 +16,7 @@ app.config['SECRET_KEY'] = secret_key
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 db = SQLAlchemy(app)
-app.cli.add_command(create_tables)
+# app.cli.add_command(create_tables)
 
 
 BUCKET = bucket
