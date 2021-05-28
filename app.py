@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from os import path
 import boto3
 from botocore.client import Config
+from settings import *
 
 
 app = Flask(__name__)
@@ -51,6 +52,7 @@ create_database(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+ print(test_var)
  global search_input
  global user_page
  session.pop('user', None)
