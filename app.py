@@ -11,16 +11,15 @@ app = Flask(__name__)
 DB_NAME = "database_2.db"
 UPLOAD_FOLDER = './static/images/profile_pics'
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
-app.config['SECRET_KEY'] = 'secret password key phrase here'
+app.config['SECRET_KEY'] = secret_key
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 db = SQLAlchemy(app)
 
-#s3 = boto3.client('s3', aws_access_key_id="AKIA6BDN2SIRY3HW2J4T", aws_secret_access_key="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")
 
-BUCKET = "hhs.alumni"
-USER_NAME = "hhs"
-PASSWORD = "hhs"
+BUCKET = bucket
+USER_NAME = user_name
+PASSWORD = password
 PER_PAGE = 5
 
 search_input = None
@@ -52,7 +51,6 @@ create_database(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
- print(test_var)
  global search_input
  global user_page
  session.pop('user', None)
@@ -224,7 +222,7 @@ def update():
       profile_picture_file = request.files['profilePic']
       profile_pic_path = ""
       if profile_picture_file.filename != "":
-        s3 = boto3.resource('s3', aws_access_key_id="AKIA6BDN2SIRY3HW2J4T", aws_secret_access_key="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", config=Config(signature_version='s3v4'))
+        s3 = boto3.resource('s3', aws_access_key_id=aws_access_key, aws_secret_access_key=aws_secret_key, config=Config(signature_version='s3v4'))
         profile_pic_path = str(request.form.get('entry_id')) + "_" + profile_picture_file.filename 
         s3.Bucket(BUCKET).put_object(Key=profile_pic_path, Body=profile_picture_file)
 
@@ -355,7 +353,7 @@ def add_info():
   if profile_picture_file.filename == "":
     profile_pic_path = "none"
   else:
-    s3 = boto3.resource('s3', aws_access_key_id="AKIA6BDN2SIRY3HW2J4T", aws_secret_access_key="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", config=Config(signature_version='s3v4'))
+    s3 = boto3.resource('s3', aws_access_key_id=aws_access_key, aws_secret_access_key=aws_secret_key, config=Config(signature_version='s3v4'))
     try:
       last_id = Entry.query.order_by(Entry.id.desc()).first().id
     except:
