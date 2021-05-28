@@ -88,6 +88,14 @@ body%}
             <div>delete</div>
           </button>
         </form>
+        <form method="POST" enctype="multipart/form-data">
+          <input id="update" name="update" type="hidden" value="{{entry.id}}" />
+          <input id="admin_search_input" name="admin_search_input" type="hidden" value={{admin_search_input}} />
+          <input id="admin_path_search" name="admin_path_search" type="hidden" value={{search}} />
+          <button type="submit" class="btn btn-info btn-update">
+            <div>Update</div>
+          </button>
+        </form>
       </div>
 
       <div class="col-sm-9 col-md-9 col-lg-9 col-xl-9 col-8">

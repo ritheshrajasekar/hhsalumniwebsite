@@ -108,6 +108,9 @@ def administrator():
         count = unapproved_entries.count()
         admin_search_entries = unapproved_entries.paginate(page=admin_user_page, per_page=PER_PAGE)
         return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=False, count=count, admin_search_input="No search")
+    elif request.form.get('update') != None:
+      user_id = request.form.get('update')
+      return redirect(url_for('update', user_id=user_id))
     elif request.form.get('delete') != None:
       admin_search_input = request.form.get('admin_search_input')
       entry = Entry.query.get_or_404(request.form.get('delete'))
@@ -184,6 +187,107 @@ def administrator():
   return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=False, count=count, admin_search_input="No search")
  return redirect(url_for('administrator_login'))
 
+@app.route('/update', methods=['GET', 'POST'])
+def update():
+  if flask.g.user:
+    if request.method == 'POST':
+      entry = Entry.query.get_or_404(int(request.form.get('entry_id')))
+      first_name_input = request.form.get('firstName').strip()
+      last_name_input = request.form.get('lastName').strip()
+      full_name_input = first_name_input + " " + last_name_input
+      email_input = request.form.get('email').strip()
+      graduation_year_input = request.form.get('graduationYear')
+      blurb_input = request.form.get('blurb').strip()
+      job_sector_list = []
+      other_option = False
+      if request.form.get('technology') != None:
+        job_sector_list.append(request.form.get('technology'))
+      if request.form.get('business') != None:
+        job_sector_list.append(request.form.get('business'))
+      if request.form.get('healthCare') != None:
+        job_sector_list.append(request.form.get('healthCare'))
+      if request.form.get('education') != None:
+        job_sector_list.append(request.form.get('education'))
+      if request.form.get('government') != None:
+        job_sector_list.append(request.form.get('government'))
+      if request.form.get('other') != None:
+        other_option = True
+        job_sector_list.append(request.form.get('otherOption').strip())
+      job_sector_input = ""
+      for index in range(len(job_sector_list)):
+        if index != 0:
+          job_sector_input += "/ "
+        job_sector_input += job_sector_list[index]
+
+      profile_picture_file = request.files['profilePic']
+      profile_pic_path = ""
+      if profile_picture_file.filename != "":
+        s3 = boto3.resource('s3', aws_access_key_id="AKIA6BDN2SIRY3HW2J4T", aws_secret_access_key="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", config=Config(signature_version='s3v4'))
+        profile_pic_path = str(request.form.get('entry_id')) + "_" + profile_picture_file.filename 
+        s3.Bucket(BUCKET).put_object(Key=profile_pic_path, Body=profile_picture_file)
+
+      college_name_input = ""
+      if request.form.get('collegeName') != "":
+        college_name_input = request.form.get('collegeName').strip()
+      else:
+        college_name_input = 'none'
+      
+      #add graduation_year into entries
+      #check every single input before creating entry and add flashes
+      errors = 0
+      entry = Entry.query.filter_by(email=email_input).first()
+      if entry and entry.email != email_input:
+        errors += 1
+        flash('Email already exists', category='error')
+      if len(email_input) < 1:
+        errors += 1
+        flash('Invalid Email', category='error')
+      if len(first_name_input) < 1 or len(last_name_input) < 1:
+        errors += 1
+        flash('Invalid Name', category='error')   
+      if len(job_sector_input) < 3:
+        errors += 1
+        flash('Please choose career field', category='error')  
+      if len(blurb_input) < 3:
+        errors += 1
+        flash('Please enter blurb', category='error') 
+      elif len(blurb_input) > 400:
+        errors += 1
+        flash('Blurb must be under 400 characters', category='error')
+      if other_option and len(request.form.get('otherOption').strip()) < 1:
+        errors += 1
+        flash('Enter other career field selected', category='error')          
+      if errors == 0:
+        entry.first_name = first_name_input
+        entry.last_name = last_name_input
+        entry.full_name = full_name_input
+        entry.email = email_input
+        entry.graduation_year = graduation_year_input
+        entry.college_name = college_name_input
+        entry.job_sector = job_sector_input
+        entry.blurb = blurb_input
+        if profile_picture_file.filename != "":
+          entry.profile_pic = profile_pic_path
+        db.session.commit()
+        flash('Updated Entry', category='success')
+        return redirect(url_for('administrator'))
+      else:
+        user_id = int(request.form.get('entry_id'))
+        entry = Entry.query.get_or_404(user_id)
+        job_sector_options = entry.job_sector
+        other = job_sector_options.replace('technology', "").replace('business', '').replace('healthcare', '').replace('education', '').replace('government', '').replace('military', '').replace('/', "").strip()
+        return render_template('update.html', entry=entry, other=other)
+    try:
+      user_id = int(request.args['user_id'])
+      entry = Entry.query.get_or_404(user_id)
+      job_sector_options = entry.job_sector
+      other = job_sector_options.replace('technology', "").replace('business', '').replace('healthcare', '').replace('education', '').replace('government', '').replace('military', '').replace('/', "").strip()
+      return render_template('update.html', entry=entry, other=other)
+    except:
+      return redirect(url_for('administrator'))
+  else:
+    return redirect(url_for('administrator_login'))
+
 @app.route('/administrator_login', methods=['GET', 'POST'])
 def administrator_login():
  if request.method == 'POST':
@@ -218,7 +322,7 @@ def add_info():
   first_name_input = request.form.get('firstName').strip()
   last_name_input = request.form.get('lastName').strip()
   full_name_input = first_name_input + " " + last_name_input
-  email_input = request.form.get('email')
+  email_input = request.form.get('email').strip()
   graduation_year_input = request.form.get('graduationYear')
   blurb_input = request.form.get('blurb').strip()
   approval_status_input = "pending"
@@ -236,7 +340,7 @@ def add_info():
     job_sector_list.append(request.form.get('government'))
   if request.form.get('other') != None:
     other_option = True
-    job_sector_list.append(request.form.get('otherOption'))
+    job_sector_list.append(request.form.get('otherOption').strip())
   job_sector_input = ""
   for index in range(len(job_sector_list)):
     if index != 0:
@@ -273,6 +377,9 @@ def add_info():
   if entry:
    errors += 1
    flash('Email already exists', category='error')
+  if len(email_input) < 1:
+    errors += 1
+    flash('Invalid Email', category='error')
   if len(first_name_input) < 1 or len(last_name_input) < 1:
    errors += 1
    flash('Invalid Name', category='error')   

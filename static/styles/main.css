@@ -124,7 +124,8 @@ body {
 }
 
 .btn-approve,
-.btn-delete {
+.btn-delete,
+.btn-update {
   width: 100%;
   margin-top: 7px;
   margin-bottom: 7px;
