@@ -15,9 +15,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SECRET_KEY'] = secret_key
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# db = SQLAlchemy(app)
-db = SQLAlchemy()
-db.init_app(app)
+db = SQLAlchemy(app)
 
 
 BUCKET = bucket
@@ -51,6 +49,10 @@ class Entry(db.Model):
 #         print('Created Successfully Database!')
 
 # create_database(app)
+
+if create_database == 'Yes':
+  db.create_all()
+  print('Created Successfully Database!')
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
