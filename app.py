@@ -6,6 +6,7 @@ from os import path
 import boto3
 from botocore.client import Config
 from settings import *
+from .commands import create_tables
 
 
 app = Flask(__name__)
