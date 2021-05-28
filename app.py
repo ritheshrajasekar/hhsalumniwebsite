@@ -10,7 +10,6 @@ from settings import *
 app = Flask(__name__)
 DB_NAME = "database_2.db"
 UPLOAD_FOLDER = './static/images/profile_pics'
-print(database_url)
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SECRET_KEY'] = secret_key
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -48,6 +47,7 @@ class Entry(db.Model):
 #         print('Created Successfully Database!')
 def create_database(app):
   if create_database == "Yes":
+    print("got here")
     db.create_all(app=app)
     print('Created Successfully Database!')
 
