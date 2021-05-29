@@ -155,6 +155,7 @@ body {
 
 .bold-name {
   color: rgb(90, 90, 90);
+  text-decoration: none;
 }
 
 .about-us-card,
