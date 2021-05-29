@@ -256,7 +256,16 @@ def update():
         flash('Blurb must be under 400 characters', category='error')
       if other_option and len(request.form.get('otherOption').strip()) < 1:
         errors += 1
-        flash('Enter other career field selected', category='error')          
+        flash('Enter other career field selected', category='error')
+      if profile_picture_file.filename != "":
+        try:
+          extension = profile_picture_file.filename.rsplit(".", 1)[1].lower().strip()
+          if extension != "jpg" and extension != "jpeg" and extension != "png" and extension != "webp" and extension != "svg" and extension != "heif":
+            errors += 1
+            flash('Profile picture does not have approved extension: jpg, jpeg, png, webp, svg, heif', category='error')    
+        except:
+          errors += 1
+          flash('Profile picture does not have approved extension: jpg, jpeg, png, webp, svg, heif', category='error')          
       if errors == 0:
         entry.first_name = first_name_input
         entry.last_name = last_name_input
@@ -394,7 +403,16 @@ def add_info():
    flash('Blurb must be under 400 characters', category='error')
   if other_option and len(request.form.get('otherOption').strip()) < 1:
    errors += 1
-   flash('Enter other career field selected', category='error')          
+   flash('Enter other career field selected', category='error')
+  if profile_picture_file.filename != "":
+   try:
+    extension = profile_picture_file.filename.rsplit(".", 1)[1].lower().strip()
+    if extension != "jpg" and extension != "jpeg" and extension != "png" and extension != "webp" and extension != "svg" and extension != "heif":
+      errors += 1
+      flash('Profile picture does not have approved extension: jpg, jpeg, png, webp, svg, heif', category='error')    
+   except:
+    errors += 1
+    flash('Profile picture does not have approved extension: jpg, jpeg, png, webp, svg, heif', category='error')           
   if errors == 0:
     new_entry = Entry(first_name=first_name_input, last_name=last_name_input, full_name=full_name_input, email=email_input, college_name=college_name_input, job_sector=job_sector_input, blurb=blurb_input, approval_status=approval_status_input, profile_pic=profile_pic_path, graduation_year=graduation_year_input)
 
