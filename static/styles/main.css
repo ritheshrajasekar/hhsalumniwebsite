@@ -114,8 +114,8 @@ body {
 }
 .navbar-custom {
   background-color: white;
-  color: rbg(100, 198, 255);
-  font-weight: bold;
+  color: rgb(55, 181, 254);
+  font-weight: 700;
 }
 
 .btn-custom {
@@ -169,7 +169,8 @@ body {
 
 .about-us-card:hover,
 .help-card:hover {
-  background-color: rgb(232, 233, 235);
+  /* background-color: rgb(232, 233, 235); */
+  background-color: rgb(226, 242, 250);
 }
 
 .home-page-title {
