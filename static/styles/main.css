@@ -114,7 +114,8 @@ body {
 }
 .navbar-custom {
   background-color: white;
-  color: #0800ff;
+  color: rbg(100, 198, 255);
+  font-weight: bold;
 }
 
 .btn-custom {
