@@ -176,3 +176,8 @@ body {
   font-weight: bold;
   color: rgb(85, 181, 236);
 }
+
+.entry-name {
+  color: rgb(85, 181, 236);
+  font-size: 15px;
+}
