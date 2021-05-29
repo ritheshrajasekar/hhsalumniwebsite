@@ -78,7 +78,7 @@ def index():
     print(user_page)
    print('search_input:')
    print(search_input)
-   search_entries = Entry.query.filter((Entry.first_name.like(search_input)) | (Entry.last_name.like(search_input)) | (Entry.full_name.like(search_input)) | (Entry.college_name.like(search_input)) | (Entry.email.like(search_input)) | (Entry.job_sector.like(search_input)) | (Entry.blurb.like(search_input)) | (Entry.graduation_year.like(search_input))).filter(Entry.approval_status == "approved")
+   search_entries = Entry.query.filter((Entry.first_name.ilike(search_input)) | (Entry.last_name.ilike(search_input)) | (Entry.full_name.ilike(search_input)) | (Entry.college_name.ilike(search_input)) | (Entry.email.ilike(search_input)) | (Entry.job_sector.ilike(search_input)) | (Entry.blurb.ilike(search_input)) | (Entry.graduation_year.ilike(search_input))).filter(Entry.approval_status == "approved")
    count = search_entries.count()
    user_search_entries = search_entries.paginate(page=int(user_page), per_page=PER_PAGE)
    return render_template('index.html', entries=user_search_entries, s3=s3, bucket=BUCKET, search=True, count=count, search_input=search_input)
@@ -99,7 +99,7 @@ def administrator():
       db.session.commit()
       flash('Approved Entry', category='success')
       if request.form.get('admin_path_search') == 'True':
-        search_entries = Entry.query.filter((Entry.first_name.like(admin_search_input)) | (Entry.last_name.like(admin_search_input)) | (Entry.full_name.like(admin_search_input)) | (Entry.college_name.like(admin_search_input)) | (Entry.email.like(admin_search_input)) | (Entry.job_sector.like(admin_search_input)) | (Entry.blurb.like(admin_search_input)) | (Entry.graduation_year.like(admin_search_input)))
+        search_entries = Entry.query.filter((Entry.first_name.ilike(admin_search_input)) | (Entry.last_name.ilike(admin_search_input)) | (Entry.full_name.ilike(admin_search_input)) | (Entry.college_name.ilike(admin_search_input)) | (Entry.email.ilike(admin_search_input)) | (Entry.job_sector.ilike(admin_search_input)) | (Entry.blurb.ilike(admin_search_input)) | (Entry.graduation_year.ilike(admin_search_input)))
         count = search_entries.count()
         admin_search_entries = search_entries.paginate(page=admin_user_page, per_page=PER_PAGE)
         return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=True, count=count, admin_search_input=admin_search_input)
@@ -120,7 +120,7 @@ def administrator():
       flash('Deleted Entry', category='success')
       if request.form.get('admin_path_search') == 'True':
         admin_user_page = 1
-        search_entries = Entry.query.filter((Entry.first_name.like(admin_search_input)) | (Entry.last_name.like(admin_search_input)) | (Entry.full_name.like(admin_search_input)) | (Entry.college_name.like(admin_search_input)) | (Entry.email.like(admin_search_input)) | (Entry.job_sector.like(admin_search_input)) | (Entry.blurb.like(admin_search_input)) | (Entry.graduation_year.like(admin_search_input)))
+        search_entries = Entry.query.filter((Entry.first_name.ilike(admin_search_input)) | (Entry.last_name.ilike(admin_search_input)) | (Entry.full_name.ilike(admin_search_input)) | (Entry.college_name.ilike(admin_search_input)) | (Entry.email.ilike(admin_search_input)) | (Entry.job_sector.ilike(admin_search_input)) | (Entry.blurb.ilike(admin_search_input)) | (Entry.graduation_year.ilike(admin_search_input)))
         count = search_entries.count()
         admin_search_entries = search_entries.paginate(page=admin_user_page, per_page=PER_PAGE)
         return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=True, count=count, admin_search_input=admin_search_input)
@@ -142,7 +142,7 @@ def administrator():
       print('current admin search path:')
       print(admin_path_search)
       if request.form.get('admin_path_search') == 'True':
-        search_entries = Entry.query.filter((Entry.first_name.like(admin_search_input)) | (Entry.last_name.like(admin_search_input)) | (Entry.full_name.like(admin_search_input)) | (Entry.college_name.like(admin_search_input)) | (Entry.email.like(admin_search_input)) | (Entry.job_sector.like(admin_search_input)) | (Entry.blurb.like(admin_search_input)) | (Entry.graduation_year.like(admin_search_input)))
+        search_entries = Entry.query.filter((Entry.first_name.ilike(admin_search_input)) | (Entry.last_name.ilike(admin_search_input)) | (Entry.full_name.ilike(admin_search_input)) | (Entry.college_name.ilike(admin_search_input)) | (Entry.email.ilike(admin_search_input)) | (Entry.job_sector.ilike(admin_search_input)) | (Entry.blurb.ilike(admin_search_input)) | (Entry.graduation_year.ilike(admin_search_input)))
         count = search_entries.count()
         admin_search_entries = search_entries.paginate(page=admin_user_page, per_page=PER_PAGE)
         return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=True, count=count, admin_search_input=admin_search_input)
@@ -163,7 +163,7 @@ def administrator():
       print(request.form.get('admin_path_search'))
       print(type(request.form.get('admin_path_search')))
       if request.form.get('admin_path_search') == 'True':
-        search_entries = Entry.query.filter((Entry.first_name.like(admin_search_input)) | (Entry.last_name.like(admin_search_input)) | (Entry.full_name.like(admin_search_input)) | (Entry.college_name.like(admin_search_input)) | (Entry.email.like(admin_search_input)) | (Entry.job_sector.like(admin_search_input)) | (Entry.blurb.like(admin_search_input)) | (Entry.graduation_year.like(admin_search_input)))
+        search_entries = Entry.query.filter((Entry.first_name.ilike(admin_search_input)) | (Entry.last_name.ilike(admin_search_input)) | (Entry.full_name.ilike(admin_search_input)) | (Entry.college_name.ilike(admin_search_input)) | (Entry.email.ilike(admin_search_input)) | (Entry.job_sector.ilike(admin_search_input)) | (Entry.blurb.ilike(admin_search_input)) | (Entry.graduation_year.ilike(admin_search_input)))
         count = search_entries.count()
         admin_search_entries = search_entries.paginate(page=admin_user_page, per_page=PER_PAGE)
         return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=True, count=count, admin_search_input=admin_search_input)
@@ -176,7 +176,7 @@ def administrator():
     # make sure delete and approve allows them to see rest of entries when done  
     else:
       admin_search_input = "%{}%".format(request.form.get('search').strip())
-      search_entries = Entry.query.filter((Entry.first_name.like(admin_search_input)) | (Entry.last_name.like(admin_search_input)) | (Entry.full_name.like(admin_search_input)) | (Entry.college_name.like(admin_search_input)) | (Entry.email.like(admin_search_input)) | (Entry.job_sector.like(admin_search_input)) | (Entry.blurb.like(admin_search_input)) | (Entry.graduation_year.like(admin_search_input)))
+      search_entries = Entry.query.filter((Entry.first_name.ilike(admin_search_input)) | (Entry.last_name.ilike(admin_search_input)) | (Entry.full_name.ilike(admin_search_input)) | (Entry.college_name.ilike(admin_search_input)) | (Entry.email.ilike(admin_search_input)) | (Entry.job_sector.ilike(admin_search_input)) | (Entry.blurb.ilike(admin_search_input)) | (Entry.graduation_year.ilike(admin_search_input)))
       count = search_entries.count()
       admin_user_page = 1
       admin_search_entries = search_entries.paginate(page=admin_user_page, per_page=PER_PAGE)
