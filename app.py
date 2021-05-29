@@ -216,7 +216,7 @@ def update():
       job_sector_input = ""
       for index in range(len(job_sector_list)):
         if index != 0:
-          job_sector_input += "/ "
+          job_sector_input += ", "
         job_sector_input += job_sector_list[index]
 
       profile_picture_file = request.files['profilePic']
@@ -284,13 +284,13 @@ def update():
         user_id = int(request.form.get('entry_id'))
         entry = Entry.query.get_or_404(user_id)
         job_sector_options = entry.job_sector
-        other = job_sector_options.replace('technology', "").replace('business', '').replace('healthcare', '').replace('education', '').replace('government', '').replace('military', '').replace('/', "").strip()
+        other = job_sector_options.replace('technology', "").replace('business', '').replace('healthcare', '').replace('education', '').replace('government', '').replace('military', '').replace(',', "").strip()
         return render_template('update.html', entry=entry, other=other)
     try:
       user_id = int(request.args['user_id'])
       entry = Entry.query.get_or_404(user_id)
       job_sector_options = entry.job_sector
-      other = job_sector_options.replace('technology', "").replace('business', '').replace('healthcare', '').replace('education', '').replace('government', '').replace('military', '').replace('/', "").strip()
+      other = job_sector_options.replace('technology', "").replace('business', '').replace('healthcare', '').replace('education', '').replace('government', '').replace('military', '').replace(',', "").strip()
       return render_template('update.html', entry=entry, other=other)
     except:
       return redirect(url_for('administrator'))
@@ -353,7 +353,7 @@ def add_info():
   job_sector_input = ""
   for index in range(len(job_sector_list)):
     if index != 0:
-      job_sector_input += "/ "
+      job_sector_input += ", "
     job_sector_input += job_sector_list[index]
 
   profile_picture_file = request.files['profilePic']
