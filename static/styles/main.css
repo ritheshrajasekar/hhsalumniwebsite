@@ -166,3 +166,7 @@ body {
 .help-card:hover {
   background-color: rgb(235, 250, 230);
 }
+
+.home-page-title {
+  font-family: "Comfortaa", cursive;
+}
