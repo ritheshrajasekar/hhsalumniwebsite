@@ -152,7 +152,7 @@ body%}
         </p>
         <p class="email">Email: {{entry.email}}</p>
         {% if entry.college_name != "none" %}
-        <p class="college_name">College Name: {{entry.college_name}}</p>
+        <p class="college_name">College Name: <a class="email" href="mailto: {{entry.college_name}}">{{entry.college_name}}</a></p>
         {% endif %}
         <p>About Me: {{entry.blurb}}</p>
       </div>
