@@ -59,7 +59,7 @@ def index():
  if request.method == 'POST':
    if request.form.get('searchHidden') != None:
     search_input = "%{}%".format(request.form.get('search').strip())
-    search_entries = Entry.query.filter((Entry.first_name.like(search_input)) | (Entry.last_name.like(search_input)) | (Entry.full_name.like(search_input)) | (Entry.college_name.like(search_input)) | (Entry.email.like(search_input)) | (Entry.job_sector.like(search_input)) | (Entry.blurb.like(search_input)) | (Entry.graduation_year.like(search_input))).filter(Entry.approval_status == "approved")
+    search_entries = Entry.query.filter((Entry.first_name.ilike(search_input)) | (Entry.last_name.ilike(search_input)) | (Entry.full_name.ilike(search_input)) | (Entry.college_name.ilike(search_input)) | (Entry.email.ilike(search_input)) | (Entry.job_sector.ilike(search_input)) | (Entry.blurb.ilike(search_input)) | (Entry.graduation_year.ilike(search_input))).filter(Entry.approval_status == "approved")
     count = search_entries.count()
     user_page = 1
     user_search_entries = search_entries.paginate(page=user_page, per_page=PER_PAGE)
