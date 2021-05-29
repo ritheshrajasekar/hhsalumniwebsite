@@ -99,18 +99,18 @@ body%}
       </div>
 
       <div class="col-sm-9 col-md-9 col-lg-9 col-xl-9 col-8">
-        <h6 class="font-weight-bold">
-          {{entry.first_name}} {{entry.last_name}} (HHS
+        <h6 class="font-weight-bold mb-3">
+          <span class="entry-name">{{entry.first_name}} {{entry.last_name}}</span> (HHS
           {{entry.graduation_year}})
         </h6>
         {% if entry.college_name != "none" %}
-        <p class="college_name">College Name: {{entry.college_name}}</p>
+        <p class="college_name mb-2"><span style="font-style: italic;">College Name:</span> {{entry.college_name}}</p>
         {% endif %}
-        <p class="email-2">Email: <a class="email-2" href="mailto: {{entry.email}}">{{entry.email}}</a></p>
-        <p class="font-weight-bold blue-text">
-          Career Field(s)/ Interest(s): {{entry.job_sector}}
+        <p class="email-2 mb-2"><span style="font-style: italic;">Email:</span> <a class="email-2" href="mailto: {{entry.email}}">{{entry.email}}</a></p>
+        <p class="font-weight-bold blue-text mb-2">
+          <span style="font-style: italic;">Career Field(s)/ Interest(s):</span> {{entry.job_sector}}
         </p>
-        <p>About Me: {{entry.blurb}}</p>
+        <p class="mb-2"><span style="font-style: italic;">About Me:</span> {{entry.blurb}}</p>
       </div>
     </div>
     <hr />
