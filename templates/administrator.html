@@ -103,13 +103,13 @@ body%}
           {{entry.first_name}} {{entry.last_name}} (HHS
           {{entry.graduation_year}})
         </h6>
-        <p class="font-weight-bold blue-text">
-          Career Field(s)/ Interest(s): {{entry.job_sector}}
-        </p>
-        <p class="email">Email: <a class="email" href="mailto: {{entry.email}}">{{entry.email}}</a></p>
         {% if entry.college_name != "none" %}
         <p class="college_name">College Name: {{entry.college_name}}</p>
         {% endif %}
+        <p class="email-2">Email: <a class="email-2" href="mailto: {{entry.email}}">{{entry.email}}</a></p>
+        <p class="font-weight-bold blue-text">
+          Career Field(s)/ Interest(s): {{entry.job_sector}}
+        </p>
         <p>About Me: {{entry.blurb}}</p>
       </div>
     </div>
