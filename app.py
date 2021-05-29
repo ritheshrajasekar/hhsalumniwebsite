@@ -58,8 +58,8 @@ def index():
  s3 = boto3.resource('s3')
  if request.method == 'POST':
    if request.form.get('searchHidden') != None:
-    search_input = "%{}%".format(request.form.get('search').strip())
-    search_entries = Entry.query.filter((Entry.first_name.like(search_input)) | (Entry.last_name.like(search_input)) | (Entry.full_name.like(search_input)) | (Entry.college_name.like(search_input)) | (Entry.email.like(search_input)) | (Entry.job_sector.like(search_input)) | (Entry.blurb.like(search_input)) | (Entry.graduation_year.like(search_input))).filter(Entry.approval_status == "approved")
+    search_input = "%{}%".format(request.form.get('search').strip().lower())
+    search_entries = Entry.query.filter((Entry.first_name.lower().like(search_input)) | (Entry.last_name.lower().like(search_input)) | (Entry.full_name.lower().like(search_input)) | (Entry.college_name.lower().like(search_input)) | (Entry.email.lower().like(search_input)) | (Entry.job_sector.lower().like(search_input)) | (Entry.blurb.lower().like(search_input)) | (Entry.graduation_year.like(search_input))).filter(Entry.approval_status == "approved")
     count = search_entries.count()
     user_page = 1
     user_search_entries = search_entries.paginate(page=user_page, per_page=PER_PAGE)
