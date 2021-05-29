@@ -40,6 +40,7 @@ class Entry(db.Model):
  profile_pic = db.Column(db.String(100))
  graduation_year = db.Column(db.String(20))
  approval_status = db.Column(db.String(20))
+ all_fields = db.Column(db.String(2000))
 
 # def create_database(app):
 #     if not path.exists(DB_NAME):
@@ -275,6 +276,8 @@ def update():
         entry.college_name = college_name_input
         entry.job_sector = job_sector_input
         entry.blurb = blurb_input
+        all_fields_input = first_name_input + " " + last_name_input + " " + full_name_input + " " + email_input + " " + str(graduation_year_input) + " " + college_name_input + " " + job_sector_input + " " + blurb_input
+        entry.all_fields = all_fields_input
         if profile_picture_file.filename != "":
           entry.profile_pic = profile_pic_path
         db.session.commit()
@@ -414,7 +417,8 @@ def add_info():
     errors += 1
     flash('Profile picture does not have approved extension: jpg, jpeg, png, webp, svg, heif', category='error')           
   if errors == 0:
-    new_entry = Entry(first_name=first_name_input, last_name=last_name_input, full_name=full_name_input, email=email_input, college_name=college_name_input, job_sector=job_sector_input, blurb=blurb_input, approval_status=approval_status_input, profile_pic=profile_pic_path, graduation_year=graduation_year_input)
+    all_fields_input = first_name_input + " " + last_name_input + " " + full_name_input + " " + email_input + " " + str(graduation_year_input) + " " + college_name_input + " " + job_sector_input + " " + blurb_input
+    new_entry = Entry(first_name=first_name_input, last_name=last_name_input, full_name=full_name_input, email=email_input, college_name=college_name_input, job_sector=job_sector_input, blurb=blurb_input, approval_status=approval_status_input, profile_pic=profile_pic_path, graduation_year=graduation_year_input, all_fields=all_fields_input)
     flash("Successfully Submitted Profile", category="success")
 
     db.session.add(new_entry)
