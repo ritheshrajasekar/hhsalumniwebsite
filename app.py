@@ -415,6 +415,7 @@ def add_info():
     flash('Profile picture does not have approved extension: jpg, jpeg, png, webp, svg, heif', category='error')           
   if errors == 0:
     new_entry = Entry(first_name=first_name_input, last_name=last_name_input, full_name=full_name_input, email=email_input, college_name=college_name_input, job_sector=job_sector_input, blurb=blurb_input, approval_status=approval_status_input, profile_pic=profile_pic_path, graduation_year=graduation_year_input)
+    flash("Successfully Submitted Profile", category="success")
 
     db.session.add(new_entry)
     print("here3")
