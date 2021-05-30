@@ -43,13 +43,6 @@ class Entry(db.Model):
  approval_status = db.Column(db.String(20))
  all_fields = db.Column(db.String(2000))
 
-# def create_database(app):
-#     if not path.exists(DB_NAME):
-#         db.create_all(app=app)
-#         print('Created Successfully Database!')
-
-# create_database(app)
-
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -66,19 +59,11 @@ def index():
     user_search_entries = search_entries.paginate(page=user_page, per_page=PER_PAGE)
     return render_template('index.html', entries=user_search_entries, s3=s3, bucket=BUCKET, search=True, search_input=search_input, count=count)
    elif request.form.get('pagePrevious') != None:
-    print('page previous entered')
     search_input = request.form.get('search_input')
     user_page = request.form.get('pagePrevious')
-    print('user page:')
-    print(user_page)
    elif request.form.get('pageNext') != None:
-    print('page next entered')
     search_input = request.form.get('search_input')
     user_page = request.form.get('pageNext')
-    print('user page:')
-    print(user_page)
-   print('search_input:')
-   print(search_input)
    search_entries = Entry.query.filter((Entry.first_name.ilike(search_input)) | (Entry.last_name.ilike(search_input)) | (Entry.full_name.ilike(search_input)) | (Entry.college_name.ilike(search_input)) | (Entry.email.ilike(search_input)) | (Entry.job_sector.ilike(search_input)) | (Entry.blurb.ilike(search_input)) | (Entry.graduation_year.ilike(search_input))).filter(Entry.approval_status == "approved")
    count = search_entries.count()
    user_search_entries = search_entries.paginate(page=int(user_page), per_page=PER_PAGE)
@@ -136,12 +121,6 @@ def administrator():
     elif request.form.get('pagePrevious') != None:
       admin_user_page = int(request.form.get('pagePrevious'))
       admin_search_input = request.form.get('admin_search_input')
-      print('pageprevious current page:')
-      print(admin_user_page)
-      print('current search phrase:')
-      print(admin_search_input)
-      print('current admin search path:')
-      print(admin_path_search)
       if request.form.get('admin_path_search') == 'True':
         search_entries = Entry.query.filter((Entry.first_name.ilike(admin_search_input)) | (Entry.last_name.ilike(admin_search_input)) | (Entry.full_name.ilike(admin_search_input)) | (Entry.college_name.ilike(admin_search_input)) | (Entry.email.ilike(admin_search_input)) | (Entry.job_sector.ilike(admin_search_input)) | (Entry.blurb.ilike(admin_search_input)) | (Entry.graduation_year.ilike(admin_search_input)))
         count = search_entries.count()
@@ -155,14 +134,6 @@ def administrator():
     elif request.form.get('pageNext') != None:
       admin_user_page = int(request.form.get('pageNext'))
       admin_search_input = request.form.get('admin_search_input')
-      print('pagenext current page:')
-      print(admin_user_page)
-      print('current search phrase:')
-      print(admin_search_input)
-      print('current admin search path:')
-      print(admin_path_search)
-      print(request.form.get('admin_path_search'))
-      print(type(request.form.get('admin_path_search')))
       if request.form.get('admin_path_search') == 'True':
         search_entries = Entry.query.filter((Entry.first_name.ilike(admin_search_input)) | (Entry.last_name.ilike(admin_search_input)) | (Entry.full_name.ilike(admin_search_input)) | (Entry.college_name.ilike(admin_search_input)) | (Entry.email.ilike(admin_search_input)) | (Entry.job_sector.ilike(admin_search_input)) | (Entry.blurb.ilike(admin_search_input)) | (Entry.graduation_year.ilike(admin_search_input)))
         count = search_entries.count()
@@ -174,7 +145,6 @@ def administrator():
         admin_search_entries = unapproved_entries.paginate(page=admin_user_page, per_page=PER_PAGE)
         return render_template('administrator.html', entries=admin_search_entries, s3=s3, bucket=BUCKET, search=False, count=count, admin_search_input="No search")
 
-    # make sure delete and approve allows them to see rest of entries when done  
     else:
       admin_search_input = "%{}%".format(request.form.get('search').strip())
       search_entries = Entry.query.filter((Entry.first_name.ilike(admin_search_input)) | (Entry.last_name.ilike(admin_search_input)) | (Entry.full_name.ilike(admin_search_input)) | (Entry.college_name.ilike(admin_search_input)) | (Entry.email.ilike(admin_search_input)) | (Entry.job_sector.ilike(admin_search_input)) | (Entry.blurb.ilike(admin_search_input)) | (Entry.graduation_year.ilike(admin_search_input)))
@@ -234,8 +204,6 @@ def update():
       else:
         college_name_input = 'none'
       
-      #add graduation_year into entries
-      #check every single input before creating entry and add flashes
       errors = 0
       email_entry = Entry.query.filter_by(email=email_input).first()
       if email_entry and entry.email != email_input:
@@ -395,8 +363,6 @@ def add_info():
   else:
     college_name_input = 'none'
   
-  #add graduation_year into entries
-  #check every single input before creating entry and add flashes
   errors = 0
   entry = Entry.query.filter_by(email=email_input).first()
   if entry:
@@ -447,11 +413,8 @@ def add_info():
     flash("Successfully Submitted Profile", category="success")
 
     db.session.add(new_entry)
-    print("here3")
     db.session.commit()
-    print("here")
     return redirect('/')
-    print("here1")
 
   
  return render_template('addinfo.html')
