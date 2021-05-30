@@ -322,12 +322,16 @@ def about_us():
 def help(): 
  return render_template('help.html')
 
+@app.route('/terms')
+def terms():
+  return render_template('terms.html')
+
 @app.before_request
 def before_request():
   flask.g.user = None
   if 'user' in session:
     flask.g.user = session['user']
-  
+
 @app.route('/addinfo', methods=['GET', 'POST'])
 def add_info():
  if request.method == 'POST':
@@ -389,6 +393,9 @@ def add_info():
   if entry:
    errors += 1
    flash('Email already exists', category='error')
+  if request.form.get('termsandconditions') == None:
+    errors += 1
+    flash('Please agree to the terms and conditions', category='error')
   if len(email_input) < 1:
     errors += 1
     flash('Invalid Email', category='error')
