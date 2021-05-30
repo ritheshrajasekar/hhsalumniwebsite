@@ -241,6 +241,15 @@ def update():
       if email_entry and entry.email != email_input:
         errors += 1
         flash('Email already exists', category='error')
+      if request.files['profilePic'] != None:
+        im = Image.open(request.files['profilePic'])
+        width, height = im.size
+        if width > height and (width/height > 2):
+          errors += 1 
+          flash('The image width is too large, please crop the photo', category='error')
+        elif height > width and (height/width > 2):
+          errors += 1 
+          flash('The image height is too large, please crop the photo', category='error')
       if len(email_input) < 1:
         errors += 1
         flash('Invalid Email', category='error')
@@ -393,14 +402,15 @@ def add_info():
   if entry:
    errors += 1
    flash('Email already exists', category='error')
-  im = Image.open(request.files['profilePic'])
-  width, height = im.size
-  if width > height and (width/height > 2):
-    errors += 1 
-    flash('The image width is too large, please crop the photo', category='error')
-  if height > width and (height/width > 2):
-    errors += 1 
-    flash('The image height is too large, please crop the photo', category='error')
+  if request.files['profilePic'] != None:
+    im = Image.open(request.files['profilePic'])
+    width, height = im.size
+    if width > height and (width/height > 2):
+      errors += 1 
+      flash('The image width is too large, please crop the photo', category='error')
+    elif height > width and (height/width > 2):
+      errors += 1 
+      flash('The image height is too large, please crop the photo', category='error')
   if request.form.get('termsandconditions') == None:
     errors += 1
     flash('Please agree to the terms and conditions', category='error')
