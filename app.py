@@ -244,10 +244,10 @@ def update():
       if request.files['profilePic'] != None:
         im = Image.open(request.files['profilePic'])
         width, height = im.size
-        if width > height and (width/height > 2):
+        if width > height and (width/height > 1.5):
           errors += 1 
           flash('The image width is too large, please crop the photo', category='error')
-        elif height > width and (height/width > 2):
+        elif height > width and (height/width > 1.5):
           errors += 1 
           flash('The image height is too large, please crop the photo', category='error')
       if len(email_input) < 1:
@@ -405,10 +405,10 @@ def add_info():
   if request.files['profilePic'] != None:
     im = Image.open(request.files['profilePic'])
     width, height = im.size
-    if width > height and (width/height > 2):
+    if width > height and (width/height > 1.5):
       errors += 1 
       flash('The image width is too large, please crop the photo', category='error')
-    elif height > width and (height/width > 2):
+    elif height > width and (height/width > 1.5):
       errors += 1 
       flash('The image height is too large, please crop the photo', category='error')
   if request.form.get('termsandconditions') == None:
