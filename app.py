@@ -241,7 +241,7 @@ def update():
       if email_entry and entry.email != email_input:
         errors += 1
         flash('Email already exists', category='error')
-      if request.files['profilePic'] != None:
+      if profile_picture_file.filename != "":
         im = Image.open(request.files['profilePic'])
         width, height = im.size
         if width > height and (width/height > 1.5):
@@ -402,7 +402,7 @@ def add_info():
   if entry:
    errors += 1
    flash('Email already exists', category='error')
-  if request.files['profilePic'] != None:
+  if profile_picture_file.filename != "":
     im = Image.open(request.files['profilePic'])
     width, height = im.size
     if width > height and (width/height > 1.5):
