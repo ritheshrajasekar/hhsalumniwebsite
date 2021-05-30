@@ -187,3 +187,13 @@ body {
 .card-title {
   color: rgb(33, 158, 231);
 }
+
+.note {
+  color: rgb(96, 96, 96);
+  font-size: 15px;
+}
+
+.last-updated {
+  color: rgb(96, 96, 96);
+  font-size: 15px;
+}
