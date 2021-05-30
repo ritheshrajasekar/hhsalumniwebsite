@@ -367,18 +367,17 @@ def add_info():
   profile_picture_file = request.files['profilePic']
   profile_pic_path = ""
   last_id = 0
-  s3 = boto3.resource('s3', aws_access_key_id=aws_access_key, aws_secret_access_key=aws_secret_key, config=Config(signature_version='s3v4'))
   if profile_picture_file.filename == "":
     profile_pic_path = "none"
   else:
+    s3 = boto3.resource('s3', aws_access_key_id=aws_access_key, aws_secret_access_key=aws_secret_key, config=Config(signature_version='s3v4'))
     try:
       last_id = Entry.query.order_by(Entry.id.desc()).first().id
     except:
       last_id = 0
-  
     current_id = last_id + 1
     profile_pic_path = str(current_id) + "_" + profile_picture_file.filename 
-    
+    s3.Bucket(BUCKET).put_object(Key=profile_pic_path, Body=profile_picture_file)
 
   
   college_name_input = ""
@@ -433,7 +432,6 @@ def add_info():
     errors += 1
     flash('Profile picture does not have approved extension: jpg, jpeg, png, webp, svg, heif', category='error')           
   if errors == 0:
-    s3.Bucket(BUCKET).put_object(Key=profile_pic_path, Body=profile_picture_file)
     all_fields_input = first_name_input + " " + last_name_input + " " + full_name_input + " " + email_input + " " + str(graduation_year_input) + " " + college_name_input + " " + job_sector_input + " " + blurb_input
     new_entry = Entry(first_name=first_name_input, last_name=last_name_input, full_name=full_name_input, email=email_input, college_name=college_name_input, job_sector=job_sector_input, blurb=blurb_input, approval_status=approval_status_input, profile_pic=profile_pic_path, graduation_year=graduation_year_input, all_fields=all_fields_input)
     flash("Successfully Submitted Profile", category="success")
