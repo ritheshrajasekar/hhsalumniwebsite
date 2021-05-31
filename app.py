@@ -42,6 +42,16 @@ class Entry(db.Model):
  graduation_year = db.Column(db.String(20))
  approval_status = db.Column(db.String(20))
  all_fields = db.Column(db.String(2000))
+ a1 = db.Column(db.String(20))
+ a2 = db.Column(db.String(20))
+ a3 = db.Column(db.String(20))
+ a4 = db.Column(db.String(20))
+ a5 = db.Column(db.String(20))
+ a6 = db.Column(db.String(20))
+ a7 = db.Column(db.String(20))
+ a8 = db.Column(db.String(20))
+ a9 = db.Column(db.String(20))
+ a10 = db.Column(db.String(20))
 
 
 @app.route('/', methods=['GET', 'POST'])
